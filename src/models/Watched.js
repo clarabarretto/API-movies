@@ -5,8 +5,7 @@ export default class Watched extends Model {
     super.init({
       rating: {
         type: Sequelize.INTEGER,
-        defaultValue: 0,
-        allowNull: true,
+        allowNull: false,
       },
       movie_id: {
         type: Sequelize.INTEGER,
@@ -20,6 +19,12 @@ export default class Watched extends Model {
       sequelize,
       modelName: 'watched',
       freezeTableName: true,
+
     });
+  }
+
+  static associate(models) {
+    this.belongsTo(models.User, { foreignKey: 'user_id' });
+    this.belongsTo(models.Movie, { foreignKey: 'movie_id' });
   }
 }

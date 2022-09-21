@@ -8,13 +8,10 @@ class WatchedController {
 
   async show(req, res) {
     try {
-      const { id } = req.filter;
-      const movie = await watchedService.show(id, req.actualUser);
+      const movie = await watchedService.show(req.actualUser);
       return res.json(movie);
     } catch (e) {
-      return res.status(400).json({
-        errors: e.errors.map((err) => err.message),
-      });
+      return res.status(500).json({ error: e.message });
     }
   }
 
@@ -29,9 +26,11 @@ class WatchedController {
 
   async delete(req, res) {
     try {
-      const deletedMovie = await watchedService.deleteMovie(req.filter, req.actualUser);
+      const deletedMovie = await watchedService.deleteWatched(req.filter, req.actualUser);
+
       return res.json(deletedMovie);
     } catch (e) {
+      // console.log(e);
       return res.status(500).json({ error: e.message });
     }
   }
@@ -39,8 +38,10 @@ class WatchedController {
   async update(req, res) {
     try {
       const updatedMovie = await watchedService.update(req.filter, req.data, req.actualUser);
+      // console.log(updatedMovie);
       return res.json(updatedMovie);
     } catch (e) {
+      // console.log(e);
       return res.status(500).json({ error: e.message });
     }
   }

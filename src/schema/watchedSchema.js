@@ -4,7 +4,7 @@ const schema = {
   store: {
     body: yup.object().shape({
       movie_id: yup.number().required(),
-      rating: yup.number(),
+      rating: yup.number().required(),
     }).noUnknown(),
   },
   update: {
@@ -12,7 +12,7 @@ const schema = {
       rating: yup.number(),
     }).noUnknown(),
     params: yup.object().shape({
-      user_id: yup.number().positive(),
+      id: yup.number().positive(),
     }).noUnknown(),
   },
   search: {

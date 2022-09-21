@@ -7,7 +7,7 @@ import Validate from '../schema/validate';
 
 const router = new Router();
 router.get('/', loginRequired, WatchedController.index);
-router.get('/:user_id', Validate(watchedSchema.show), loginRequired, WatchedController.show);
+router.get('/profile/', Validate(watchedSchema.show), loginRequired, WatchedController.show);
 router.post('/', Validate(watchedSchema.store), loginRequired, WatchedController.store);
 router.put('/:id', Validate(watchedSchema.update), loginRequired, WatchedController.update);
 router.delete('/:id', Validate(watchedSchema.search), loginRequired, WatchedController.delete);

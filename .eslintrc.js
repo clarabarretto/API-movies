@@ -17,5 +17,7 @@ module.exports = {
     'no-param-reassign': 'off',
     'no-empty-function': 'off',
     camelcase: 'off',
+    'eslint-disable-next-line max-len': 'on',
+    'no-return-assign': 'off',
   },
 };
