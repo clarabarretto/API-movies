@@ -19,7 +19,6 @@ const index = (filter) => {
 
 const show = (userToken) => {
   const attributes = ['rating', 'movie_id', 'user_id'];
-  console.log(userToken);
   return Watched.findAll({
     where: { user_id: userToken.id },
     attributes,
@@ -37,10 +36,35 @@ const allRating = async (data) => {
     raw: true,
   });
 
-
   const reduceRating = findAllRatings.reduce((previousValue, currentValue) => previousValue += currentValue.rating, 0);
-  console.log(reduceRating);
+
+  console.log(findAllRatings, "AQUI, SOU EU PFVR OLHA AQUI ")
+  return ~~reduceRating / ~~findAllRatings.length
+
 };
+
+const allGenre = async (actualUser,data) => {
+  const mostRepeatedGenre = {}
+
+  const findAllGenres = await Watched.findAll({
+    where: {user_id: actualUser.id},
+    attributes: [],
+    include: [{
+      model: Movie,
+      attributes: ['genre']
+    }],
+    raw: true,
+    nest: true
+  })
+
+  findAllGenres.forEach(movie => {
+    mostRepeatedGenre[movie.Movie.genre] ? mostRepeatedGenre[movie.Movie.genre] = mostRepeatedGenre[movie.Movie.genre] + 1 : mostRepeatedGenre[movie.Movie.genre] = 1
+  });
+
+  const mostViewed = Object.keys(mostRepeatedGenre).reduce((previous, after) => mostRepeatedGenre[previous] > mostRepeatedGenre[after] ? previous : after, '');
+
+  return mostViewed
+}
 
 const store = async (actualUser, data) => {
   const transaction = await Watched.sequelize.transaction();
@@ -49,44 +73,49 @@ const store = async (actualUser, data) => {
       throw new Error('admins cannot add movies to accounts');
     }
 
+    const genreValue = await allGenre(actualUser,data)
     const ratingValue = await allRating(data);
-
-    console.log(ratingValue, 'esse valor aqui');
 
     data.user_id = actualUser.id;
 
-    // const newMovie = await Watched.create(data, { transaction });
+    const newMovie = await Watched.create(data);
 
-    // const movieTime = await Movie.findByPk(newMovie.movie_id, {
-    //   attributes: ['time'],
-    //   raw: true,
-    // });
+    const movieTime = await Movie.findByPk(newMovie.movie_id, {
+      attributes: ['time'],
+      raw: true,
+      transaction
+    });
 
-    // console.log(movieTime);
-    // const timeMovie = movieTime.time + actualUser.total_time;
+    const timeMovie = movieTime.time + actualUser.total_time;
 
-    // await User.update({ total_time: timeMovie }, {
-    //   where: {
-    //     id: actualUser.id,
-    //   },
-    //   transaction,
-    // });
+    await User.update({most_watched_genre: genreValue},{
+      where:{
+        id: actualUser.id,
+      },
+      transaction,
+    })
 
-    // await Movie.update({ratingValue}, {
-    //   where
-    // })
+    await User.update({ total_time: timeMovie }, {
+      where: {
+        id: actualUser.id,
+      },
+      transaction,
+    });
 
-    // console.log;
+    await Movie.update({rating: ratingValue}, {
+      where: {id: data.movie_id },
+      transaction,
+    })
 
-    // const {
-    //   rating, user_id, movie_id,
-    // } = newMovie;
+    const {
+      rating, user_id, movie_id,
+    } = newMovie;
 
-    // await transaction.commit();
+    await transaction.commit();
 
-    // return {
-    //   rating, user_id, movie_id,
-    // };
+    return {
+      rating, user_id, movie_id,
+    };
   } catch (e) {
     console.log(e);
     await transaction.rollback();
@@ -113,34 +142,38 @@ const deleteWatched = async (filter, userToken) => {
 
     const timeMovie = userToken.total_time - movieInfo.time;
 
-    await User.update({ time: timeMovie }, {
+    await User.update({ total_time: timeMovie }, {
       where: {
         id: userToken.id,
       },
       transaction,
     });
-    console.log('oi');
+
     await transaction.commit();
     return { deleted: watch };
   } catch (e) {
-    // console.log(e);
     await transaction.rollback();
     throw new Error('ERROR');
   }
 };
 
 const update = async (filter, data, userToken) => {
-  const { id } = filter;
-  const movie = await Watched.findByPk(id);
+  const transaction = await Watched.sequelize.transaction();
+  try {
+    const { id } = filter;
+    const movie = await Watched.findByPk(id);
 
-  // fazer transaction alteração do rating
+    if (userToken.admin) {
+      throw new Error('admins cannot update movies from accounts');
+    }
 
-  if (userToken.admin) {
-    throw new Error('admins cannot update movies from accounts');
+    await Promise.all([movie.update(data), Movie.update(data, {where: {movie_id: movie.id}}, transaction)])
+    await transaction.commit();
+    return { update: movie };
+  }catch(e){
+    await transaction.rollback();
+    throw new Error('ERROR');
   }
-
-  await movie.update(data);
-  return { update: movie };
 };
 
 module.exports = {

@@ -1,4 +1,5 @@
 const User = require('../models/User').default;
+const Watched = require('../models/Watched').default
 
 const index = (filter) => {
   const admin = filter;
@@ -24,7 +25,6 @@ const show = (filter) => {
 
 const store = async (data) => {
   delete data.confirmPassword;
-  // console.log(data);
   const newUser = await User.create(data);
   const { username, email } = newUser;
   return { username, email };
@@ -32,7 +32,6 @@ const store = async (data) => {
 
 const deleteUser = async (userToken, filter) => {
   const user = await User.findByPk(filter.id);
-  console.log(filter);
 
   if (!userToken.admin && !user) {
     throw new Error('you cannot delete other users');
@@ -45,6 +44,10 @@ const deleteUser = async (userToken, filter) => {
 
     await User.update({ admin: true }, { where: { id: nextAdmin[0].id } });
   }
+
+  await Watched.destroy({
+    where: {user_id: filter.id},
+  })
 
   await user.destroy();
   return { deleted: user };

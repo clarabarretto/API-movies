@@ -3,8 +3,9 @@ import databaseConfig from '../config/database';
 import User from '../models/User';
 import Movie from '../models/Movie';
 import Watched from '../models/Watched';
+import Cover from '../models/Cover';
 
-const models = [User, Movie, Watched];
+const models = [User, Movie, Watched, Cover];
 
 const connection = new Sequelize(databaseConfig);
 

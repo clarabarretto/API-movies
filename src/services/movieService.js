@@ -29,7 +29,6 @@ const store = async (actualUser, data) => {
   }
 
   data.admin_id = actualUser.id;
-  // console.log(data);
   const newMovie = await Movie.create(data);
   const {
     name, director, genre, time, synopsis, admin_id,

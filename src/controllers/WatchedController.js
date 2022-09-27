@@ -30,7 +30,7 @@ class WatchedController {
 
       return res.json(deletedMovie);
     } catch (e) {
-      // console.log(e);
+      console.log(e);
       return res.status(500).json({ error: e.message });
     }
   }
@@ -38,10 +38,9 @@ class WatchedController {
   async update(req, res) {
     try {
       const updatedMovie = await watchedService.update(req.filter, req.data, req.actualUser);
-      // console.log(updatedMovie);
       return res.json(updatedMovie);
     } catch (e) {
-      // console.log(e);
+      console.log(e);
       return res.status(500).json({ error: e.message });
     }
   }

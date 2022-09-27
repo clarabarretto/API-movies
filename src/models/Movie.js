@@ -10,7 +10,6 @@ export default class Movie extends Model {
       },
       synopsis: {
         type: Sequelize.STRING,
-        // defaultValue: '',
       },
       director: {
         type: Sequelize.STRING,
