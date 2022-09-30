@@ -38,7 +38,6 @@ const allRating = async (data) => {
 
   const reduceRating = findAllRatings.reduce((previousValue, currentValue) => previousValue += currentValue.rating, 0);
 
-  console.log(findAllRatings, "AQUI, SOU EU PFVR OLHA AQUI ")
   return ~~reduceRating / ~~findAllRatings.length
 
 };
@@ -88,14 +87,8 @@ const store = async (actualUser, data) => {
 
     const timeMovie = movieTime.time + actualUser.total_time;
 
-    await User.update({most_watched_genre: genreValue},{
-      where:{
-        id: actualUser.id,
-      },
-      transaction,
-    })
 
-    await User.update({ total_time: timeMovie }, {
+    await User.update({ total_time: timeMovie, most_watched_genre: genreValue}, {
       where: {
         id: actualUser.id,
       },

@@ -4,7 +4,7 @@ const schema = {
   store: {
     body: yup.object().shape({
       admin: yup.boolean().default(false),
-      username: yup.string().required('username is required'),
+      username: yup.string().required('username is required').min(3).max(50),
       email: yup.string().email().required(),
       password: yup.string().required(),
       confirmPassword: yup.string(255)
