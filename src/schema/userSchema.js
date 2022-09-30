@@ -14,7 +14,7 @@ const schema = {
   },
   update: {
     body: yup.object().shape({
-      username: yup.string(),
+      username: yup.string().min(3).max(50),
       email: yup.string().email(),
     }).noUnknown(),
   },
