@@ -1,26 +1,31 @@
 import watchedService from '../services/watchedService';
+import BaseController from './BaseController'
 
-class WatchedController {
+class WatchedController{
   async index(req, res) {
-    const movies = await watchedService.index(req.actualUser);
-    res.json(movies);
+    try {
+      const movies = await watchedService.index(req.actualUser);
+      return BaseController.handleResponse(res, movies)
+    } catch (e) {
+      return BaseController.handleError(res, 'ERROR')
+    }
   }
 
   async show(req, res) {
     try {
       const movie = await watchedService.show(req.actualUser);
-      return res.json(movie);
+      return BaseController.handleResponse(res, movie)
     } catch (e) {
-      return res.status(500).json({ error: e.message });
+      return BaseController.handleError(res, 'ERROR')
     }
   }
 
   async store(req, res) {
     try {
       const newMovie = await watchedService.store(req.actualUser, req.data);
-      return res.json(newMovie);
+      return BaseController.handleResponse(res, newMovie)
     } catch (e) {
-      return res.status(500).json({ error: e.message });
+      return BaseController.handleError(res, 'ERROR')
     }
   }
 
@@ -28,20 +33,21 @@ class WatchedController {
     try {
       const deletedMovie = await watchedService.deleteWatched(req.filter, req.actualUser);
 
-      return res.json(deletedMovie);
+      return BaseController.handleResponse(res, deletedMovie)
     } catch (e) {
       console.log(e);
-      return res.status(500).json({ error: e.message });
+      return BaseController.handleError(res, 'ERROR')
     }
   }
 
   async update(req, res) {
     try {
       const updatedMovie = await watchedService.update(req.filter, req.data, req.actualUser);
-      return res.json(updatedMovie);
+
+      return BaseController.handleResponse(res, updatedMovie)
     } catch (e) {
       console.log(e);
-      return res.status(500).json({ error: e.message });
+      return BaseController.handleError(res, 'ERROR')
     }
   }
 }

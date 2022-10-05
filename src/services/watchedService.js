@@ -38,15 +38,16 @@ const allRating = async (data) => {
 
   const reduceRating = findAllRatings.reduce((previousValue, currentValue) => previousValue += currentValue.rating, 0);
 
-  return ~~reduceRating / ~~findAllRatings.length
+  console.log(~~reduceRating / (~~findAllRatings.length || 0))
+  return ~~reduceRating / (~~findAllRatings.length || 0)
 
 };
 
-const allGenre = async (actualUser,data) => {
+const allGenre = async (actualUser, data) => {
   const mostRepeatedGenre = {}
 
   const findAllGenres = await Watched.findAll({
-    where: {user_id: actualUser.id},
+    where: { user_id: actualUser.id },
     attributes: [],
     include: [{
       model: Movie,
@@ -60,6 +61,10 @@ const allGenre = async (actualUser,data) => {
     mostRepeatedGenre[movie.Movie.genre] ? mostRepeatedGenre[movie.Movie.genre] = mostRepeatedGenre[movie.Movie.genre] + 1 : mostRepeatedGenre[movie.Movie.genre] = 1
   });
 
+  //.
+  // {} Objeto com key and value
+  // [] Array sem chave, apenas valor
+
   const mostViewed = Object.keys(mostRepeatedGenre).reduce((previous, after) => mostRepeatedGenre[previous] > mostRepeatedGenre[after] ? previous : after, '');
 
   return mostViewed
@@ -71,13 +76,12 @@ const store = async (actualUser, data) => {
     if (actualUser.admin) {
       throw new Error('admins cannot add movies to accounts');
     }
+    data.user_id = actualUser.id;
+    const newMovie = await Watched.create(data, { transaction });
 
-    const genreValue = await allGenre(actualUser,data)
+    const genreValue = await allGenre(actualUser, data)
     const ratingValue = await allRating(data);
 
-    data.user_id = actualUser.id;
-
-    const newMovie = await Watched.create(data);
 
     const movieTime = await Movie.findByPk(newMovie.movie_id, {
       attributes: ['time'],
@@ -87,16 +91,15 @@ const store = async (actualUser, data) => {
 
     const timeMovie = movieTime.time + actualUser.total_time;
 
-
-    await User.update({ total_time: timeMovie, most_watched_genre: genreValue}, {
+    await User.update({ total_time: timeMovie, most_watched_genre: genreValue }, {
       where: {
         id: actualUser.id,
       },
       transaction,
     });
 
-    await Movie.update({rating: ratingValue}, {
-      where: {id: data.movie_id },
+    await Movie.update({ rating: ratingValue }, {
+      where: { id: data.movie_id },
       transaction,
     })
 
@@ -105,14 +108,12 @@ const store = async (actualUser, data) => {
     } = newMovie;
 
     await transaction.commit();
-
     return {
       rating, user_id, movie_id,
     };
   } catch (e) {
-    console.log(e);
     await transaction.rollback();
-    throw new Error('ERROR');
+    throw new Error(e);
   }
 };
 
@@ -146,7 +147,7 @@ const deleteWatched = async (filter, userToken) => {
     return { deleted: watch };
   } catch (e) {
     await transaction.rollback();
-    throw new Error('ERROR');
+    throw new Error(e);
   }
 };
 
@@ -160,12 +161,12 @@ const update = async (filter, data, userToken) => {
       throw new Error('admins cannot update movies from accounts');
     }
 
-    await Promise.all([movie.update(data), Movie.update(data, {where: {movie_id: movie.id}}, transaction)])
+    await Promise.all([movie.update(data), Movie.update(data, { where: { movie_id: movie.id } }, transaction)])
     await transaction.commit();
     return { update: movie };
-  }catch(e){
+  } catch (e) {
     await transaction.rollback();
-    throw new Error('ERROR');
+    throw new Error(e);
   }
 };
 

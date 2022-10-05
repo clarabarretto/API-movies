@@ -4,47 +4,50 @@ class UserController {
   async index(req, res) {
     try {
       const users = await userService.index(req.actualUser.admin);
-
-      return res.json(users);
+      return BaseController.handleResponse(res, users)
     } catch (e) {
-      return res.status(500).json({ error: e.message });
+      return BaseController.handleError(res, 'ERROR')
+
     }
   }
 
   async show(req, res) {
     try {
       const user = await userService.show(req.actualUser);
-      return res.json(user);
+      return BaseController.handleResponse(res, user)
     } catch (e) {
-      return res.status(500).json({ error: e.message });
+      return BaseController.handleError(res, 'ERROR')
+
     }
   }
 
   async store(req, res) {
     try {
       const newUser = await userService.store(req.data);
-      return res.json(newUser);
+      return BaseController.handleResponse(res, newUser)
     } catch (e) {
-      return res.status(500).json({ error: e.message });
+      return BaseController.handleError(res, 'ERROR')
+
     }
   }
 
   async delete(req, res) {
     try {
       const user = await userService.deleteUser(req.actualUser, req.filter);
-      return res.json(user);
+      return BaseController.handleResponse(res, user)
     } catch (e) {
-      return res.status(500).json({ error: e.message });
+      return BaseController.handleError(res, 'ERROR')
+
     }
   }
 
   async update(req, res) {
     try {
       const updatedUser = await userService.update(req.actualUser, req.data);
-
-      return res.json(updatedUser);
+      return BaseController.handleResponse(res, updatedUser)
     } catch (e) {
-      return res.status(500).json({ error: e.message });
+      return BaseController.handleError(res, 'ERROR')
+
     }
   }
 }

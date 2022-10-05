@@ -1,47 +1,52 @@
 import movieService from '../services/movieService';
+import BaseController from './BaseController';
 
 class MovieController {
   async index(req, res) {
-    const movies = await movieService.index(req.actualUser);
-    res.json(movies);
+    try {
+      const movies = await movieService.index(req.actualUser);
+      return BaseController.handleResponse(res, movies)
+    } catch (e) {
+      return BaseController.handleError(res, 'ERROR')
+    }
   }
 
   async show(req, res) {
     try {
       const { id } = req.filter;
       const movie = await movieService.show(id, req.actualUser);
-      return res.json(movie);
+      return BaseController.handleResponse(res, movie)
     } catch (e) {
-      return res.status(400).json({
-        errors: e.errors.map((err) => err.message),
-      });
+      return BaseController.handleError(res, 'ERROR')
+
     }
   }
 
   async store(req, res) {
     try {
       const newMovie = await movieService.store(req.actualUser, req.data);
-      return res.json(newMovie);
+      return BaseController.handleResponse(res, newMovie)
     } catch (e) {
-      return res.status(500).json({ error: e.message });
+      return BaseController.handleError(res, 'ERROR')
+
     }
   }
 
   async delete(req, res) {
     try {
       const deletedMovie = await movieService.deleteMovie(req.filter, req.actualUser);
-      return res.json(deletedMovie);
+      return BaseController.handleResponse(res, deletedMovie)
     } catch (e) {
-      return res.status(500).json({ error: e.message });
+      return BaseController.handleError(res, 'ERROR')
     }
   }
 
   async update(req, res) {
     try {
       const updatedMovie = await movieService.update(req.filter, req.data, req.actualUser);
-      return res.json(updatedMovie);
+      return BaseController.handleResponse(res, updatedMovie)
     } catch (e) {
-      return res.status(500).json({ error: e.message });
+      return BaseController.handleError(res, 'ERROR')
     }
   }
 }

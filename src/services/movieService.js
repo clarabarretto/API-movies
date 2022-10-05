@@ -1,11 +1,14 @@
 const Movie = require('../models/Movie').default;
+const Watched = require('../models/Watched').default
 
 const index = (filter) => {
   const { admin } = filter;
   const attributes = ['name', 'synopsis', 'director', 'genre', 'time', 'rating', 'id'];
+
   if (admin) {
     attributes.push('admin_id');
   }
+
   return Movie.findAll({
     attributes,
   });
@@ -13,22 +16,26 @@ const index = (filter) => {
 
 const show = (filter, userToken) => {
   const id = filter;
-  console.log(id);
+  // console.log(id);
   const attributes = ['name', 'synopsis', 'director', 'genre', 'time', 'rating', 'id'];
+
   if (userToken.admin) {
     attributes.push('admin_id');
   }
+
   return Movie.findByPk(id, {
     attributes,
   });
 };
 
 const store = async (actualUser, data) => {
+
   if (!actualUser.admin) {
     throw new Error('user is not an admin');
   }
 
   data.admin_id = actualUser.id;
+
   const newMovie = await Movie.create(data);
   const {
     name, director, genre, time, synopsis, admin_id,
@@ -40,27 +47,47 @@ const store = async (actualUser, data) => {
 };
 
 const deleteMovie = async (filter, userToken) => {
-  const { id } = filter;
-  const movie = await Movie.findByPk(id);
+  const transaction = await Watched.sequelize.transaction();
 
-  if (!userToken.admin) {
-    throw new Error('you cannot delete movies');
+  try {
+    const { id } = filter;
+    const movie = await Movie.findByPk(id);
+
+    if (!userToken.admin) {
+      throw new Error('you cannot delete movies');
+    }
+
+    await Watched.destroy({
+      where: {
+        movie_id: id
+      },
+      transaction
+    })
+
+    await movie.destroy();
+    await transaction.commit();
+    return { deleted: movie };
+
+  } catch (e) {
+    await transaction.rollback();
+    throw new Error(e);
   }
 
-  await movie.destroy();
-  return { deleted: movie };
 };
 
 const update = async (filter, data, userToken) => {
   const { id } = filter;
-  const movie = await Movie.findByPk(id);
 
   if (!userToken.admin) {
     throw new Error('you cannot update movies');
   }
 
-  await movie.update(data);
-  return { updated: movie };
+  return Movie.update(data, {
+    where: {
+      id
+    },
+  });
+
 };
 
 module.exports = {

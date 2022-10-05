@@ -46,7 +46,7 @@ const deleteUser = async (userToken, filter) => {
   }
 
   await Watched.destroy({
-    where: {user_id: filter.id},
+    where: { user_id: filter.id },
   })
 
   await user.destroy();

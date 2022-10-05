@@ -12,7 +12,6 @@ class CoverController {
           errors: [error.code],
         });
       }
-
       try {
         const { originalname, filename } = req.file;
         const { movie_id } = req.params;
@@ -21,9 +20,7 @@ class CoverController {
 
         return res.json(cover);
       } catch (e) {
-        return res.status(400).json({
-          errors: ['movie does not exist'],
-        });
+        return res.status(500).json({ error: e.message });
       }
     });
   }
