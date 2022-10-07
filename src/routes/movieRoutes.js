@@ -1,15 +1,20 @@
-import { Router } from 'express';
+import BaseRoute from './baseRoutes';
 import movieController from '../controllers/MovieController';
 import movieSchema from '../schema/movieSchema';
-
 import loginRequired from '../middlewares/loginRequired';
-import Validate from '../schema/validate';
 
-const router = new Router();
-router.get('/', loginRequired, movieController.index);
-router.get('/:id', loginRequired, Validate(movieSchema.search), movieController.show);
-router.post('/', loginRequired, Validate(movieSchema.store), movieController.store);
-router.put('/:id', loginRequired, Validate(movieSchema.update), movieController.update);
-router.delete('/:id', loginRequired, Validate(movieSchema.search), movieController.delete);
+class MovieRoutes extends BaseRoute {
+  setup(){
+    this.routes.use(loginRequired)
+    this.routes.get('/', movieController.index)
+    this.routes.get('/:id', this.schemaValidator.validate(movieSchema.search), movieController.show)
+    this.routes.post('/', this.schemaValidator.validate(movieSchema.store), movieController.store)
+    this.routes.put('/:id', this.schemaValidator.validate(movieSchema.update),movieController.update)
+    this.routes.delete('/:id', this.schemaValidator.validate(movieSchema.search), movieController.delete)
 
-export default router;
+    return this.routes
+  }
+}
+
+export default new MovieRoutes();
+

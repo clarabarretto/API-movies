@@ -1,6 +1,7 @@
 import userService from '../services/userService';
+import BaseController from './BaseController';
 
-class UserController {
+class UserController extends BaseController  {
   async index(req, res) {
     try {
       const users = await userService.index(req.actualUser.admin);

@@ -1,10 +1,11 @@
 import multer from 'multer'
 import Cover from '../models/Cover';
 import multerConfig from "../config/multerConfig";
+import BaseController from './BaseController';
 
 const upload = multer(multerConfig).single('cover');
 
-class CoverController {
+class CoverController extends BaseController  {
   store(req, res) {
     return upload(req, res, async (error) => {
       if (error) {
@@ -15,12 +16,12 @@ class CoverController {
       try {
         const { originalname, filename } = req.file;
         const { movie_id } = req.params;
-
         const cover = await Cover.create({ originalname, filename, movie_id });
 
-        return res.json(cover);
+        return BaseController.handleResponse(res, cover)
       } catch (e) {
-        return res.status(500).json({ error: e.message });
+        return BaseController.handleError(res, 'error while posting a cover')
+
       }
     });
   }

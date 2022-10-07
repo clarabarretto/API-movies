@@ -1,15 +1,19 @@
-import { Router } from 'express';
+import BaseRoute from './baseRoutes';
 import userController from '../controllers/UserController';
 import userSchema from '../schema/userSchema';
-
 import loginRequired from '../middlewares/loginRequired';
-import Validate from '../schema/validate';
 
-const router = new Router();
-router.get('/', loginRequired, userController.index);
-router.get('/profile', loginRequired, userController.show);
-router.post('/', Validate(userSchema.store), userController.store);
-router.put('/', loginRequired, Validate(userSchema.update), userController.update);
-router.delete('/:id', loginRequired, Validate(userSchema.delete), userController.delete);
+class UserRoutes extends BaseRoute {
+  setup(){
+    this.routes.use(loginRequired)
+    this.routes.get('/', userController.index )
+    this.routes.get('/profile',  userController.show)
+    this.routes.post('/',  this.schemaValidator.validate(userSchema.store), userController.store)
+    this.routes.put('/',  this.schemaValidator.validate(userSchema.update), userController.update)
+    this.routes.delete('/:id',  this.schemaValidator.validate(userSchema.delete), userController.delete)
 
-export default router;
+    return this.routes
+  }
+}
+
+export default new UserRoutes()

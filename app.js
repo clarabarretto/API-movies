@@ -26,12 +26,16 @@ class App {
 
   }
   routes() {
-    this.app.use('/users/', userRoutes);
-    this.app.use('/tokens/', tokenRoutes);
-    this.app.use('/movies/', movieRoutes);
-    this.app.use('/watched/', watchedRoutes);
-    this.app.use('/covers/', coverRoutes);
+    this.app.use('/users/', userRoutes.setup());
+    this.app.use('/movies/', movieRoutes.setup());
+    this.app.use('/watched/', watchedRoutes.setup());
+    this.app.use('/tokens/', tokenRoutes.setup());
+    this.app.use('/covers/', coverRoutes.setup());
   }
+  setup() {
+    this.middlewares();
+    this.routes();
+};
 }
 
 export default new App().app;

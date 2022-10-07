@@ -1,7 +1,7 @@
 import tokenService from '../services/tokenService';
 import BaseController from './BaseController';
 
-class TokenController {
+class TokenController extends BaseController {
   async store(req, res) {
     try {
       const token = await tokenService.store(req.data);

@@ -61,10 +61,6 @@ const allGenre = async (actualUser, data) => {
     mostRepeatedGenre[movie.Movie.genre] ? mostRepeatedGenre[movie.Movie.genre] = mostRepeatedGenre[movie.Movie.genre] + 1 : mostRepeatedGenre[movie.Movie.genre] = 1
   });
 
-  //.
-  // {} Objeto com key and value
-  // [] Array sem chave, apenas valor
-
   const mostViewed = Object.keys(mostRepeatedGenre).reduce((previous, after) => mostRepeatedGenre[previous] > mostRepeatedGenre[after] ? previous : after, '');
 
   return mostViewed

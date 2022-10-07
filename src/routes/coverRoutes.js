@@ -1,10 +1,14 @@
-import { Router } from 'express';
 import coverController from '../controllers/CoverController';
-
 import loginRequired from '../middlewares/loginRequired';
+import BaseRoute from '../routes/baseRoutes'
 
-const router = new Router();
+class CoverRoutes extends BaseRoute{
+  setup(){
+    this.routes.use(loginRequired)
+    this.routes.post('/:movie_id', coverController.store)
 
-router.post('/:movie_id', loginRequired, coverController.store);
+    return this.routes
+  }
+}
 
-export default router;
+export default new CoverRoutes();

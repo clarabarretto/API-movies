@@ -1,7 +1,7 @@
 import watchedService from '../services/watchedService';
 import BaseController from './BaseController'
 
-class WatchedController{
+class WatchedController extends BaseController {
   async index(req, res) {
     try {
       const movies = await watchedService.index(req.actualUser);

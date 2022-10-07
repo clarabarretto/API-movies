@@ -1,10 +1,12 @@
-import { Router } from 'express';
+import BaseRoute from './baseRoutes';
 import tokenController from '../controllers/TokenController';
 import tokenSchema from '../schema/tokenSchema';
-import Validate from '../schema/validate';
 
-const router = new Router();
+class tokenRoutes extends BaseRoute {
+  setup(){
+    this.routes.post('/',this.schemaValidator.validate(tokenSchema.store), tokenController.store)
 
-router.post('/', Validate(tokenSchema.store), tokenController.store);
-
-export default router;
+    return this.routes
+  }
+}
+export default new tokenRoutes();
