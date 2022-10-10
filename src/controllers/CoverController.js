@@ -1,12 +1,20 @@
 import multer from 'multer'
-import Cover from '../models/Cover';
+// import Cover from '../models/Cover';
 import multerConfig from "../config/multerConfig";
 import BaseController from './BaseController';
+import coverService from '../services/coverService'
 
 const upload = multer(multerConfig).single('cover');
 
 class CoverController extends BaseController  {
-  store(req, res) {
+  constructor(){
+    super()
+
+    this.store = this.store.bind(this)
+    this.deleteCover = this.deleteCover.bind(this)
+  }
+
+  async store(req, res) {
     return upload(req, res, async (error) => {
       if (error) {
         return res.status(400).json({
@@ -14,17 +22,29 @@ class CoverController extends BaseController  {
         });
       }
       try {
-        const { originalname, filename } = req.file;
+        const fileData = req.file;
         const { movie_id } = req.params;
-        const cover = await Cover.create({ originalname, filename, movie_id });
+        const cover = await coverService.store(fileData, movie_id);
 
-        return BaseController.handleResponse(res, cover)
+        return this.handleResponse(res, cover)
       } catch (e) {
-        return BaseController.handleError(res, 'error while posting a cover')
+        return this.handleError(res, e)
 
       }
     });
   }
+
+  async deleteCover(req, res){
+    try {
+      const deletedCover = await coverService.deleteCover(req.params)
+      this.handleResponse(res, deletedCover)
+    } catch (e) {
+      console.log(e)
+      this.handleError(res, e)
+    }
+  }
+
+
 }
 
 export default new CoverController();

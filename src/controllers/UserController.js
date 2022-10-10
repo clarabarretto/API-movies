@@ -1,13 +1,23 @@
 import userService from '../services/userService';
 import BaseController from './BaseController';
 
-class UserController extends BaseController  {
+class UserController extends BaseController {
+  constructor(){
+    super();
+
+    this.index = this.index.bind(this)
+    this.show = this.show.bind(this)
+    this.store = this.store.bind(this)
+    this.delete = this.delete.bind(this)
+    this.update = this.update.bind(this)
+  }
+
   async index(req, res) {
     try {
       const users = await userService.index(req.actualUser.admin);
-      return BaseController.handleResponse(res, users)
+      this.handleResponse(res, users)
     } catch (e) {
-      return BaseController.handleError(res, 'ERROR')
+      this.handleError(res, 'ERROR')
 
     }
   }
@@ -15,9 +25,9 @@ class UserController extends BaseController  {
   async show(req, res) {
     try {
       const user = await userService.show(req.actualUser);
-      return BaseController.handleResponse(res, user)
+      this.handleResponse(res, user)
     } catch (e) {
-      return BaseController.handleError(res, 'ERROR')
+      this.handleError(res, 'ERROR')
 
     }
   }
@@ -25,9 +35,9 @@ class UserController extends BaseController  {
   async store(req, res) {
     try {
       const newUser = await userService.store(req.data);
-      return BaseController.handleResponse(res, newUser)
+      this.handleResponse(res, newUser)
     } catch (e) {
-      return BaseController.handleError(res, 'ERROR')
+      this.handleError(res, 'ERROR')
 
     }
   }
@@ -35,9 +45,9 @@ class UserController extends BaseController  {
   async delete(req, res) {
     try {
       const user = await userService.deleteUser(req.actualUser, req.filter);
-      return BaseController.handleResponse(res, user)
+      this.handleResponse(res, user)
     } catch (e) {
-      return BaseController.handleError(res, 'ERROR')
+      this.handleError(res, 'ERROR')
 
     }
   }
@@ -45,9 +55,9 @@ class UserController extends BaseController  {
   async update(req, res) {
     try {
       const updatedUser = await userService.update(req.actualUser, req.data);
-      return BaseController.handleResponse(res, updatedUser)
+      this.handleResponse(res, updatedUser)
     } catch (e) {
-      return BaseController.handleError(res, 'ERROR')
+      this.handleError(res, 'ERROR')
 
     }
   }

@@ -2,30 +2,40 @@ import watchedService from '../services/watchedService';
 import BaseController from './BaseController'
 
 class WatchedController extends BaseController {
+  constructor(){
+    super()
+
+    this.index = this.index.bind(this)
+    this.show = this.show.bind(this)
+    this.store = this.store.bind(this)
+    this.delete = this.delete.bind(this)
+    this.update = this.update.bind(this)
+  }
+
   async index(req, res) {
     try {
       const movies = await watchedService.index(req.actualUser);
-      return BaseController.handleResponse(res, movies)
+      this.handleResponse(res, movies)
     } catch (e) {
-      return BaseController.handleError(res, 'ERROR')
+      this.handleError(res, 'ERROR')
     }
   }
 
   async show(req, res) {
     try {
       const movie = await watchedService.show(req.actualUser);
-      return BaseController.handleResponse(res, movie)
+      this.handleResponse(res, movie)
     } catch (e) {
-      return BaseController.handleError(res, 'ERROR')
+      this.handleError(res, 'ERROR')
     }
   }
 
   async store(req, res) {
     try {
       const newMovie = await watchedService.store(req.actualUser, req.data);
-      return BaseController.handleResponse(res, newMovie)
+      this.handleResponse(res, newMovie)
     } catch (e) {
-      return BaseController.handleError(res, 'ERROR')
+      this.handleError(res, 'ERROR')
     }
   }
 
@@ -33,10 +43,10 @@ class WatchedController extends BaseController {
     try {
       const deletedMovie = await watchedService.deleteWatched(req.filter, req.actualUser);
 
-      return BaseController.handleResponse(res, deletedMovie)
+      this.handleResponse(res, deletedMovie)
     } catch (e) {
       console.log(e);
-      return BaseController.handleError(res, 'ERROR')
+      this.handleError(res, 'ERROR')
     }
   }
 
@@ -44,10 +54,10 @@ class WatchedController extends BaseController {
     try {
       const updatedMovie = await watchedService.update(req.filter, req.data, req.actualUser);
 
-      return BaseController.handleResponse(res, updatedMovie)
+      this.handleResponse(res, updatedMovie)
     } catch (e) {
       console.log(e);
-      return BaseController.handleError(res, 'ERROR')
+      this.handleError(res, 'ERROR')
     }
   }
 }

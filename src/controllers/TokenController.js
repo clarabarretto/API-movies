@@ -2,12 +2,18 @@ import tokenService from '../services/tokenService';
 import BaseController from './BaseController';
 
 class TokenController extends BaseController {
+  constructor(){
+    super()
+
+    this.store = this.store.bind(this)
+  }
+
   async store(req, res) {
     try {
       const token = await tokenService.store(req.data);
-      return BaseController.handleResponse(res, {token})
+      this.handleResponse(res, {token})
     } catch (e) {
-      return BaseController.handleError(res, 'ERROR')
+      this.handleError(res, 'ERROR')
     }
   }
 }

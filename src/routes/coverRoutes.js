@@ -6,6 +6,7 @@ class CoverRoutes extends BaseRoute{
   setup(){
     this.routes.use(loginRequired)
     this.routes.post('/:movie_id', coverController.store)
+    this.routes.delete('/delete/:id', coverController.deleteCover)
 
     return this.routes
   }
