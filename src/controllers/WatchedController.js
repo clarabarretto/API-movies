@@ -45,7 +45,7 @@ class WatchedController extends BaseController {
 
       this.handleResponse(res, deletedMovie)
     } catch (e) {
-      console.log(e);
+
       this.handleError(res, 'ERROR')
     }
   }
@@ -56,7 +56,7 @@ class WatchedController extends BaseController {
 
       this.handleResponse(res, updatedMovie)
     } catch (e) {
-      console.log(e);
+
       this.handleError(res, 'ERROR')
     }
   }

@@ -16,7 +16,6 @@ const index = (filter) => {
 
 const show = (filter, userToken) => {
   const id = filter;
-  // console.log(id);
   const attributes = ['name', 'synopsis', 'director', 'genre', 'time', 'rating', 'id'];
 
   if (userToken.admin) {

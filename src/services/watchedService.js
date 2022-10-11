@@ -38,7 +38,6 @@ const allRating = async (data) => {
 
   const reduceRating = findAllRatings.reduce((previousValue, currentValue) => previousValue += currentValue.rating, 0);
 
-  console.log(~~reduceRating / (~~findAllRatings.length || 0))
   return ~~reduceRating / (~~findAllRatings.length || 0)
 
 };

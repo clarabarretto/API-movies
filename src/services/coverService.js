@@ -1,14 +1,23 @@
 import Cover from "../models/Cover";
 import Movie from "../models/Movie"
 
-  const store = async(file, movie_id) => {
+  const store = async(file, movie_id, actualUser) => {
+
+    if(!file){
+      throw new Error('there is no file to be posted')
+    }
+
+    if(!actualUser.admin){
+      throw new Error('user is not an admin')
+    }
+
     const movie = await Movie.findOne({
       where: {
         id: movie_id,
       },
       raw: true
     })
-    console.log(movie)
+
     if(!movie){
       throw new Error('movie does not exist')
     }
@@ -17,8 +26,13 @@ import Movie from "../models/Movie"
     return cover
   }
 
-  const deleteCover = async(filter) => {
+  const deleteCover = async(filter, actualUser) => {
     try{
+
+      if(!actualUser.admin){
+        throw new Error('user is not an admin')
+      }
+
       const toDeleteCover = await Cover.findByPk(filter.id)
       await toDeleteCover.destroy()
       return{deleted: toDeleteCover}

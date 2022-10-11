@@ -1,5 +1,4 @@
 import multer from 'multer'
-// import Cover from '../models/Cover';
 import multerConfig from "../config/multerConfig";
 import BaseController from './BaseController';
 import coverService from '../services/coverService'
@@ -24,7 +23,7 @@ class CoverController extends BaseController  {
       try {
         const fileData = req.file;
         const { movie_id } = req.params;
-        const cover = await coverService.store(fileData, movie_id);
+        const cover = await coverService.store(fileData, movie_id, req.actualUser);
 
         return this.handleResponse(res, cover)
       } catch (e) {
@@ -36,10 +35,10 @@ class CoverController extends BaseController  {
 
   async deleteCover(req, res){
     try {
-      const deletedCover = await coverService.deleteCover(req.params)
+      const deletedCover = await coverService.deleteCover(req.params, req.actualUser)
       this.handleResponse(res, deletedCover)
     } catch (e) {
-      console.log(e)
+
       this.handleError(res, e)
     }
   }
