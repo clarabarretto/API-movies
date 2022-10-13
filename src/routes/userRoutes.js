@@ -1,11 +1,10 @@
 import BaseRoute from './baseRoutes';
 import userController from '../controllers/UserController';
 import userSchema from '../schema/userSchema';
-import loginRequired from '../middlewares/loginRequired';
 
 class UserRoutes extends BaseRoute {
   setup(){
-    this.routes.use(loginRequired)
+    this.routes.use(this.LoginRequired)
     this.routes.get('/', userController.index )
     this.routes.get('/profile',  userController.show)
     this.routes.post('/',  this.schemaValidator.validate(userSchema.store), userController.store)

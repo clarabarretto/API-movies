@@ -1,11 +1,10 @@
 import BaseRoute from './baseRoutes';
 import movieController from '../controllers/MovieController';
 import movieSchema from '../schema/movieSchema';
-import loginRequired from '../middlewares/loginRequired';
 
 class MovieRoutes extends BaseRoute {
   setup(){
-    this.routes.use(loginRequired)
+    this.routes.use(this.LoginRequired)
     this.routes.get('/', movieController.index)
     this.routes.get('/:id', this.schemaValidator.validate(movieSchema.search), movieController.show)
     this.routes.post('/', this.schemaValidator.validate(movieSchema.store), movieController.store)
