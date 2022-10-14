@@ -1,7 +1,7 @@
 import jwt from 'jsonwebtoken';
 import User from '../models/User';
 
-export default async (req, res, next) => {
+const validToken = async (req, res, next) => {
   const { authorization } = req.headers;
 
   if (!authorization) {
@@ -31,10 +31,31 @@ export default async (req, res, next) => {
     }
 
     req.actualUser = user;
-    return next();
+   next();
   } catch (e) {
     return res.status(401).json({
       errors: ['expired or invalid token'],
     });
   }
-};
+}
+
+const isAdmin = async (req,res,next) => {
+  try{
+    if (!req?.actualUser?.admin) {
+      return res.status(401).json({
+        errors: ['user is not an admin'],
+      });
+    }
+
+    next()
+  }catch(e){
+    return res.status(401).json({
+      errors: ['user is not an admin'],
+  })
+}
+}
+
+module.exports = {
+  validToken, isAdmin
+}
+

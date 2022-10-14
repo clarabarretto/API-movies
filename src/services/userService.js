@@ -3,9 +3,7 @@ const Watched = require('../models/Watched').default
 
 const index = (filter) => {
   const admin = filter;
-  if (!admin) {
-    throw new Error('user is not an admin');
-  }
+
   return User.findAll({
     attributes: ['id', 'username', 'email', 'admin', 'total_time', 'most_watched_genre'],
   });
@@ -18,6 +16,7 @@ const show = (filter) => {
   if (admin) {
     attributes.push('admin', 'email');
   }
+
   return User.findByPk(id, {
     attributes,
   });

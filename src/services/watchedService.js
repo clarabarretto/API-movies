@@ -42,11 +42,11 @@ const allRating = async (data) => {
 
 };
 
-const allGenre = async (actualUser, data) => {
+const allGenre = async (userToken) => {
   const mostRepeatedGenre = {}
 
   const findAllGenres = await Watched.findAll({
-    where: { user_id: actualUser.id },
+    where: { user_id: userToken.id },
     attributes: [],
     include: [{
       model: Movie,
@@ -65,16 +65,17 @@ const allGenre = async (actualUser, data) => {
   return mostViewed
 }
 
-const store = async (actualUser, data) => {
+const store = async (userToken, data) => {
   const transaction = await Watched.sequelize.transaction();
   try {
-    if (actualUser.admin) {
+    if (userToken.admin) {
       throw new Error('admins cannot add movies to accounts');
     }
-    data.user_id = actualUser.id;
+
+    data.user_id = userToken.id;
     const newMovie = await Watched.create(data, { transaction });
 
-    const genreValue = await allGenre(actualUser, data)
+    const genreValue = await allGenre(userToken, data)
     const ratingValue = await allRating(data);
 
 
@@ -84,11 +85,11 @@ const store = async (actualUser, data) => {
       transaction
     });
 
-    const timeMovie = movieTime.time + actualUser.total_time;
+    const timeMovie = movieTime.time + userToken.total_time;
 
     await User.update({ total_time: timeMovie, most_watched_genre: genreValue }, {
       where: {
-        id: actualUser.id,
+        id: userToken.id,
       },
       transaction,
     });
@@ -141,6 +142,7 @@ const deleteWatched = async (filter, userToken) => {
     await transaction.commit();
     return { deleted: watch };
   } catch (e) {
+    console.log(e);
     await transaction.rollback();
     throw new Error(e);
   }

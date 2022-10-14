@@ -1,7 +1,8 @@
 class SchemaValidator {
   validate(schema) {
     return async (req, res, next) => {
-      const requestData = Object.keys(req.body).length || Object.keys(req.file).length
+      console.log(req.body)
+      const requestData = (req.body && Object.keys(req?.body).length || req?.file && Object.keys(req?.file).length)
 
       try {
         req.data = requestData

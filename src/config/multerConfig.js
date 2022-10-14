@@ -6,9 +6,9 @@ const randomFunction = () => Math.floor(Math.random() * 10000 + 10000);
 export default {
   fileFilter: (req, file, cb) => {
 
-    if (!['image/png', 'image/jpeg'].includes(file.mimetype)) {
-      return cb('file must be PNG or JPG');
-    }
+    // if (!['image/png', 'image/jpeg'].includes(file.mimetype)) {
+    //   return cb('file must be PNG or JPG');
+    // }
 
     return cb(null, true);
   },

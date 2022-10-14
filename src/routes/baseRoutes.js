@@ -10,7 +10,9 @@ class BaseRoute{
     this.routes = Router()
     this.schemaValidator = new SchemaValidator();
     this.upload = multer(multerConfig).single('file');
-    this.LoginRequired = loginRequired;
+    this.LoginRequired = loginRequired.validToken;
+    this.isAdmin = loginRequired.isAdmin
+
   }
 }
 

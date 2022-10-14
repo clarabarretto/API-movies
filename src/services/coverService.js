@@ -1,10 +1,8 @@
 import Cover from "../models/Cover";
 import Movie from "../models/Movie"
 
+
 const store = async (file, movie_id, actualUser) => {
-  if (!actualUser.admin) {
-    throw new Error('user is not an admin')
-  }
 
   const movie = await Movie.findOne({
     where: {
@@ -21,9 +19,6 @@ const store = async (file, movie_id, actualUser) => {
 
 const deleteCover = async (filter, actualUser) => {
   try {
-    if (!actualUser.admin) {
-      throw new Error('user is not an admin')
-    }
 
     const toDeleteCover = await Cover.findByPk(filter.id)
     await toDeleteCover.destroy()

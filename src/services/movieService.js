@@ -27,13 +27,9 @@ const show = (filter, userToken) => {
   });
 };
 
-const store = async (actualUser, data) => {
+const store = async (userToken, data) => {
 
-  if (!actualUser.admin) {
-    throw new Error('user is not an admin');
-  }
-
-  data.admin_id = actualUser.id;
+  data.admin_id = userToken.id;
 
   const newMovie = await Movie.create(data);
   const {
@@ -51,10 +47,6 @@ const deleteMovie = async (filter, userToken) => {
   try {
     const { id } = filter;
     const movie = await Movie.findByPk(id);
-
-    if (!userToken.admin) {
-      throw new Error('you cannot delete movies');
-    }
 
     await Watched.destroy({
       where: {
@@ -76,11 +68,6 @@ const deleteMovie = async (filter, userToken) => {
 
 const update = async (filter, data, userToken) => {
   const { id } = filter;
-
-  if (!userToken.admin) {
-    throw new Error('you cannot update movies');
-  }
-
   return Movie.update(data, {
     where: {
       id

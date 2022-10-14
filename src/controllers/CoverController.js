@@ -1,9 +1,5 @@
-// import multer from 'multer'
-// import multerConfig from "../config/multerConfig";
 import BaseController from './BaseController';
 import coverService from '../services/coverService'
-
-// const upload = multer(multerConfig).single('cover');
 
 class CoverController extends BaseController {
   constructor() {
@@ -14,8 +10,8 @@ class CoverController extends BaseController {
   }
 
   async store(req, res) {
+
     try {
-      console.log(req.data, 123456);
       const fileData = req.data;
       const { movie_id } = req.params;
       const cover = await coverService.store(fileData, movie_id, req.actualUser);
