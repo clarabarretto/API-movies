@@ -2,7 +2,6 @@ const User = require('../models/User').default;
 const Watched = require('../models/Watched').default
 
 const index = (filter) => {
-  const admin = filter;
 
   return User.findAll({
     attributes: ['id', 'username', 'email', 'admin', 'total_time', 'most_watched_genre'],
@@ -32,7 +31,7 @@ const store = async (data) => {
 const deleteUser = async (userToken, filter) => {
   const user = await User.findByPk(filter.id);
 
-  if (!userToken.admin && !user) {
+  if (!userToken.admin || (!userToken.admin && user.id !== userToken.id)) {
     throw new Error('you cannot delete other users');
   }
 
@@ -52,8 +51,8 @@ const deleteUser = async (userToken, filter) => {
   return { deleted: user };
 };
 
-const update = async (filter, data) => {
-  await User.update(data, { where: { id: filter.id } });
+const update = async (userToken, data) => {
+  await User.update(data, { where: { id: userToken.id } });
 
   return data;
 };

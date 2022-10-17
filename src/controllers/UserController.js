@@ -14,7 +14,7 @@ class UserController extends BaseController {
 
   async index(req, res) {
     try {
-      const users = await userService.index(req.actualUser.admin);
+      const users = await userService.index();
       this.handleResponse(res, users)
     } catch (e) {
       this.handleError(res, 'ERROR')

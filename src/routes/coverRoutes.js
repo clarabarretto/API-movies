@@ -4,9 +4,8 @@ import coverSchema from '../schema/coverSchema'
 
 class CoverRoutes extends BaseRoute {
   setup() {
-    this.routes.use(this.LoginRequired)
-    this.routes.use(this.isAdmin)
-
+    // this.routes.use(this.LoginRequired)
+    // this.routes.use(this.isAdmin)
     this.routes.post('/:movie_id', this.upload, this.schemaValidator.validate(coverSchema.store),coverController.store)
     this.routes.delete('/delete/:id', coverController.deleteCover)
 

@@ -61,7 +61,7 @@ const deleteMovie = async (filter, userToken) => {
 
   } catch (e) {
     await transaction.rollback();
-    throw new Error(e);
+    throw e;
   }
 
 };

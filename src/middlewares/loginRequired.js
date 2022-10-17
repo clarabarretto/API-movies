@@ -41,7 +41,9 @@ const validToken = async (req, res, next) => {
 
 const isAdmin = async (req,res,next) => {
   try{
+    console.log(req.actualUser);
     if (!req?.actualUser?.admin) {
+
       return res.status(401).json({
         errors: ['user is not an admin'],
       });

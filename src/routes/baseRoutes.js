@@ -11,7 +11,7 @@ class BaseRoute{
     this.schemaValidator = new SchemaValidator();
     this.upload = multer(multerConfig).single('file');
     this.LoginRequired = loginRequired.validToken;
-    this.isAdmin = loginRequired.isAdmin
+    this.isAdmin = loginRequired.isAdmin;
 
   }
 }

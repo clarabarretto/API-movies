@@ -42,6 +42,7 @@ export default class Movie extends Model {
       },
     }, {
       sequelize,
+      paranoid: true
     });
   }
 }

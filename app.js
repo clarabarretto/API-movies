@@ -10,11 +10,14 @@ import tokenRoutes from './src/routes/tokenRoutes';
 import movieRoutes from './src/routes/movieRoutes';
 import watchedRoutes from './src/routes/watchedRoutes';
 import coverRoutes from './src/routes/coverRoutes';
+import loginRequired from './src/middlewares/loginRequired'
 
 env.config();
 
 class App {
   constructor() {
+    this.loginRequired = loginRequired.validToken
+    this.isAdmin = loginRequired.isAdmin
     this.app = express();
     this.middlewares();
     this.routes();
@@ -30,7 +33,7 @@ class App {
     this.app.use('/movies/', movieRoutes.setup());
     this.app.use('/watched/', watchedRoutes.setup());
     this.app.use('/tokens/', tokenRoutes.setup());
-    this.app.use('/covers/', coverRoutes.setup());
+    this.app.use('/covers/',this.loginRequired, this.isAdmin, coverRoutes.setup());
   }
   setup() {
     this.middlewares();

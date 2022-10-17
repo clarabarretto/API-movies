@@ -19,6 +19,7 @@ export default class Watched extends Model {
       sequelize,
       modelName: 'watched',
       freezeTableName: true,
+      paranoid: true
 
     });
   }

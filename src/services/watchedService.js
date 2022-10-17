@@ -78,11 +78,9 @@ const store = async (userToken, data) => {
     const genreValue = await allGenre(userToken, data)
     const ratingValue = await allRating(data);
 
-
     const movieTime = await Movie.findByPk(newMovie.movie_id, {
       attributes: ['time'],
-      raw: true,
-      transaction
+      raw: true
     });
 
     const timeMovie = movieTime.time + userToken.total_time;
@@ -109,7 +107,7 @@ const store = async (userToken, data) => {
     };
   } catch (e) {
     await transaction.rollback();
-    throw new Error(e);
+    throw e
   }
 };
 
@@ -144,7 +142,7 @@ const deleteWatched = async (filter, userToken) => {
   } catch (e) {
     console.log(e);
     await transaction.rollback();
-    throw new Error(e);
+    throw e
   }
 };
 
@@ -163,7 +161,7 @@ const update = async (filter, data, userToken) => {
     return { update: movie };
   } catch (e) {
     await transaction.rollback();
-    throw new Error(e);
+    throw e
   }
 };
 

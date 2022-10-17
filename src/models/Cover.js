@@ -21,6 +21,7 @@ export default class Cover extends Model {
     }, {
       sequelize,
       tableName: 'covers',
+      paranoid: true
     });
     return this;
   }

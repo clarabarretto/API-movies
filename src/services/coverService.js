@@ -24,7 +24,7 @@ const deleteCover = async (filter, actualUser) => {
     await toDeleteCover.destroy()
     return { deleted: toDeleteCover }
   } catch (e) {
-    throw new Error(e)
+    throw e
   }
 }
 
