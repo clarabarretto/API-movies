@@ -19,9 +19,9 @@ const store = async (file, movie_id, actualUser) => {
 
 const deleteCover = async (filter, actualUser) => {
   try {
-
     const toDeleteCover = await Cover.findByPk(filter.id)
     await toDeleteCover.destroy()
+
     return { deleted: toDeleteCover }
   } catch (e) {
     throw e

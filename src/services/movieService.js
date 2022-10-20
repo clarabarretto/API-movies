@@ -1,5 +1,7 @@
+const Cover = require('../models/Cover').default
 const Movie = require('../models/Movie').default;
 const Watched = require('../models/Watched').default
+// const{pick, omit} = require('lodash') // refazer
 
 const index = (filter) => {
   const { admin } = filter;
@@ -30,8 +32,8 @@ const show = (filter, userToken) => {
 const store = async (userToken, data) => {
 
   data.admin_id = userToken.id;
-
   const newMovie = await Movie.create(data);
+
   const {
     name, director, genre, time, synopsis, admin_id,
   } = newMovie;
@@ -49,6 +51,12 @@ const deleteMovie = async (filter, userToken) => {
     const movie = await Movie.findByPk(id);
 
     await Watched.destroy({
+      where: {
+        movie_id: id
+      },
+      transaction
+    })
+    await Cover.destroy({
       where: {
         movie_id: id
       },

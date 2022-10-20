@@ -38,7 +38,6 @@ class MovieController extends BaseController {
       this.handleResponse(res, newMovie)
     } catch (e) {
       this.handleError(res, 'error while storing a movie')
-
     }
   }
 
