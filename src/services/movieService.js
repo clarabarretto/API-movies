@@ -1,22 +1,24 @@
 const Cover = require('../models/Cover').default
 const Movie = require('../models/Movie').default;
 const Watched = require('../models/Watched').default
-// const{pick, omit} = require('lodash') // refazer
+const { pick, map } = require('lodash')
 
-const index = (filter) => {
-  const { admin } = filter;
-  const attributes = ['name', 'synopsis', 'director', 'genre', 'time', 'rating', 'id'];
+const index = async (filter) => {
+  const attributes = ['name', 'synopsis', 'director', 'genre', 'time', 'rating', 'id']
 
-  if (admin) {
-    attributes.push('admin_id');
+  if (filter.admin) {
+    attributes.push('admin_id', 'deleted_at');
   }
-
-  return Movie.findAll({
+  const movies = await Movie.findAll({
     attributes,
+    raw: true
   });
+
+  const movieResponse = map(movies, movie => pick(movie, attributes));
+  return movieResponse
 };
 
-const show = (filter, userToken) => {
+const show = async (filter, userToken) => {
   const id = filter;
   const attributes = ['name', 'synopsis', 'director', 'genre', 'time', 'rating', 'id'];
 
@@ -24,9 +26,12 @@ const show = (filter, userToken) => {
     attributes.push('admin_id');
   }
 
-  return Movie.findByPk(id, {
+  const movie = await Movie.findByPk(id, {
     attributes,
+    raw: true
   });
+
+  return pick(movie, attributes)
 };
 
 const store = async (userToken, data) => {
