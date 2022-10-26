@@ -2,19 +2,10 @@ const User = require('../models/User').default;
 const Watched = require('../models/Watched').default
 const {pick, map} = require('lodash')
 
-const index = async (filter) => {
-  const attributes = ['id', 'username', 'email', 'total_time', 'most_watched_genre']
-
-  if (filter.admin) {
-    attributes.push('admin')
-  const users = await User.findAll({
-    attributes,
-    raw: true
-  });
-
-  const userResponse = map(users, user => pick(user, attributes));
-  return userResponse
-};
+const index = async () => {
+  return User.findAll({
+    attributes: ['id', 'username', 'email', 'admin', 'total_time', 'most_watched_genre'],
+  })
 }
 
 const show = async (filter) => {

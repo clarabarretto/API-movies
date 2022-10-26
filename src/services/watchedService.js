@@ -1,32 +1,42 @@
 const Watched = require('../models/Watched').default;
 const Movie = require('../models/Movie').default;
 const User = require('../models/User').default;
+const {pick, map} = require('lodash')
 
-const index = (filter) => {
-  const { admin } = filter;
+const index = async (filter) => {
   const attributes = ['rating', 'movie_id'];
-  if (admin) {
+
+  if(filter.id){
     attributes.push('id', 'user_id');
   }
-  return Watched.findAll({
+
+  const watcheds = await Watched.findAll({
     attributes,
     include: [{
       model: Movie,
       attributes: ['name', 'genre', 'time', 'rating'],
     }],
-  });
+  })
+
+    const watchedsResponse = map(watcheds, watched => pick(watched, ['name', 'genre', 'time', 'rating', 'movie_id','Movie']))
+
+    return watchedsResponse
 };
 
-const show = (userToken) => {
+const show = async (userToken) => {
   const attributes = ['rating', 'movie_id', 'user_id'];
-  return Watched.findAll({
+
+  const userWatcheds = await Watched.findAll({
     where: { user_id: userToken.id },
     attributes,
     include: [{
       model: Movie,
       attributes: ['name', 'genre', 'time', 'rating', 'synopsis', 'director'],
     }],
-  });
+  })
+  const userWatchedsResponse = map(userWatcheds, watched => pick(watched,  ['name', 'genre', 'time', 'rating', 'movie_id','Movie']))
+
+  return userWatchedsResponse
 };
 
 const allRating = async (data) => {
