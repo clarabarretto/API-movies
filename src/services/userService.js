@@ -1,16 +1,18 @@
 const User = require('../models/User').default;
 const Watched = require('../models/Watched').default
 const {pick, map} = require('lodash')
+import { Op, where } from "sequelize";
 
 const index = async (filter) => {
   const whereFilter = {}
-
+  console.log(filter)
   if (filter?.username) {
     whereFilter.username = {[Op.iLike]: `%${filter.username}%`}
   }
 
   return User.findAll({
     attributes: ['id', 'username', 'email', 'admin', 'total_time', 'most_watched_genre'],
+    where: whereFilter
   })
 }
 

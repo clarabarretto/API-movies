@@ -4,7 +4,7 @@ import userSchema from '../schema/userSchema';
 
 class UserRoutes extends BaseRoute {
   setup(){
-    this.routes.post('/',  this.schemaValidator.validate(userSchema.store), userController.store)
+    this.routes.post('/', this.schemaValidator.validate(userSchema.store), userController.store)
 
     this.routes.use(this.LoginRequired)
     this.routes.get('/', this.schemaValidator.validate(userSchema.index), userController.index )
