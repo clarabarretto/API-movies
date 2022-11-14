@@ -14,11 +14,10 @@ class UserController extends BaseController {
 
   async index(req, res) {
     try {
-      const users = await userService.index(req.actualUser);
+      const users = await userService.index(req.actualUser, req.query);
       this.handleResponse(res, users)
     } catch (e) {
       this.handleError(res, 'ERROR')
-
     }
   }
 
@@ -44,6 +43,7 @@ class UserController extends BaseController {
 
   async delete(req, res) {
     try {
+      console.log('entrouuuuu no deleteee amem')
       const user = await userService.deleteUser(req.actualUser, req.filter);
       this.handleResponse(res, user)
     } catch (e) {

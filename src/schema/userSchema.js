@@ -1,6 +1,11 @@
 import * as yup from 'yup';
 
 const schema = {
+  index:{
+    query: yup.object().shape({
+      username: yup.string(),
+    }).noUnknown(),
+  },
   store: {
     body: yup.object().shape({
       admin: yup.boolean().default(false),
@@ -16,11 +21,6 @@ const schema = {
     body: yup.object().shape({
       username: yup.string().min(3).max(50),
       email: yup.string().email(),
-    }).noUnknown(),
-  },
-  delete: {
-    params: yup.object().shape({
-      id: yup.number().integer().positive(),
     }).noUnknown(),
   },
 };

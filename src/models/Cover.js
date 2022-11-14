@@ -27,7 +27,7 @@ export default class Cover extends Model {
   }
 
   static associate(models) {
-    this.belongsTo(models.Movie, { foreignKey: 'movie_id' });
+    this.belongsTo(models.Movie, { foreignKey: 'movie_id', as: 'movie' });
   }
 }
 

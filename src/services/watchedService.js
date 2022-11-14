@@ -139,8 +139,13 @@ const store = async (userToken, data) => {
 const deleteWatched = async (filter, userToken) => {
   const transaction = await Watched.sequelize.transaction();
   try {
-    const { id } = filter;
-    const watch = await Watched.findByPk(id);
+    const { movie_id } = filter;
+    const watch = await Watched.findOne({
+      where: {
+        movie_id,
+        user_id: userToken.id
+      }
+    });
 
     if (userToken.admin || userToken.id !== watch.user_id) {
       console.log(watch.user_id);

@@ -3,7 +3,7 @@ import User from '../models/User';
 
 const validToken = async (req, res, next) => {
   const { authorization } = req.headers;
-
+  // console.log(req.headers, 'authorization')
   if (!authorization) {
     return res.status(401).json({
       errors: ['login required'],
@@ -41,7 +41,7 @@ const validToken = async (req, res, next) => {
 
 const isAdmin = async (req,res,next) => {
   try{
-    console.log(req.actualUser);
+    // console.log(req.actualUser);
     if (!req?.actualUser?.admin) {
 
       return res.status(401).json({

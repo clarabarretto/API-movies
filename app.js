@@ -4,6 +4,7 @@ import env from 'dotenv';
 import { resolve } from 'path';
 
 import express from 'express';
+import cors from 'cors';
 
 import userRoutes from './src/routes/userRoutes';
 import tokenRoutes from './src/routes/tokenRoutes';
@@ -26,14 +27,15 @@ class App {
     this.app.use(express.urlencoded({ extended: true }));
     this.app.use(express.json());
     this.app.use(express.static(resolve(__dirname, 'uploads')));
+    this.app.use(cors());
 
   }
   routes() {
-    this.app.use('/users/', userRoutes.setup());
+    this.app.use('/users', userRoutes.setup());
     this.app.use('/movies/', movieRoutes.setup());
     this.app.use('/watched/', watchedRoutes.setup());
-    this.app.use('/tokens/', tokenRoutes.setup());
-    this.app.use('/covers/',this.loginRequired, this.isAdmin, coverRoutes.setup());
+    this.app.use('/login/', tokenRoutes.setup());
+    this.app.use('/covers/', coverRoutes.setup());
   }
   setup() {
     this.middlewares();

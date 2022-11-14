@@ -32,6 +32,36 @@ class CoverController extends BaseController {
     }
   }
 
+  async show(req,res){
+    try{
+      const showCover = await coverService.show(req.params.id)
+      return res.json(showCover)
+    }catch(e){
+      console.log(e);
+    }
+  }
+
+  async allCovers(req, res) {
+    try {
+      console.log(req.query)
+
+      const cover = await coverService.allCovers(req.query);
+      return res.json(cover)
+
+    } catch (e) {
+      console.log(e);
+    }
+  }
+
+  async getCoverUsers(req,res){
+    try {
+      const watched = await coverService.getCoverUsers(req.actualUser);
+      console.log(watched)
+      return res.json(watched)
+    } catch (e) {
+      console.log(e);
+    }
+  }
 
 }
 

@@ -2,13 +2,20 @@ const User = require('../models/User').default;
 const Watched = require('../models/Watched').default
 const {pick, map} = require('lodash')
 
-const index = async () => {
+const index = async (filter) => {
+  const whereFilter = {}
+
+  if (filter?.username) {
+    whereFilter.username = {[Op.iLike]: `%${filter.username}%`}
+  }
+
   return User.findAll({
     attributes: ['id', 'username', 'email', 'admin', 'total_time', 'most_watched_genre'],
   })
 }
 
 const show = async (filter) => {
+  console.log(filter);
   const { id } = filter;
   const attributes = ['username', 'total_time', 'most_watched_genre', 'id'];
 
@@ -32,7 +39,10 @@ const store = async (data) => {
 };
 
 const deleteUser = async (userToken, filter) => {
-  const user = await User.findByPk(filter.id);
+  const filterId = filter.id || userToken.id
+
+
+  const user = await User.findByPk(filterId);
 
   if (!userToken.admin && user.id !== userToken.id) {
     return('you cannot delete other users');
@@ -46,8 +56,9 @@ const deleteUser = async (userToken, filter) => {
     await User.update({ admin: true }, { where: { id: nextAdmin[0].id } });
   }
 
+  console.log(user, 'user')
   await Watched.destroy({
-    where: { user_id: filter.id },
+    where: { user_id: userToken.id },
   })
 
   await user.destroy();

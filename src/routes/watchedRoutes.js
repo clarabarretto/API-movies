@@ -9,7 +9,7 @@ class WatchedRoutes extends BaseRoute {
     this.routes.get('/profile/', this.schemaValidator.validate(watchedSchema.show), WatchedController.show)
     this.routes.post('/', this.schemaValidator.validate(watchedSchema.store), WatchedController.store)
     this.routes.put('/:id', this.schemaValidator.validate(watchedSchema.update), WatchedController.update)
-    this.routes.delete('/:id', this.schemaValidator.validate(watchedSchema.search), WatchedController.delete)
+    this.routes.delete('/:movie_id', this.schemaValidator.validate(watchedSchema.search), WatchedController.delete)
 
     return this.routes
   }

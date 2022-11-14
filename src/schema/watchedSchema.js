@@ -17,15 +17,14 @@ const schema = {
   },
   search: {
     params: yup.object().shape({
-      id: yup.number().positive(),
+      movie_id: yup.number().positive(),
     }).noUnknown(),
   },
   show: {
     params: yup.object().shape({
       user_id: yup.number().positive(),
     }).noUnknown(),
-  },
-
+  }
 };
 
 export default schema;
