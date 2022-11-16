@@ -33,6 +33,19 @@ const show = async (filter) => {
   return pick(user, attributes)
 };
 
+const redirectUser = async (filter) => {
+  const id = filter;
+  console.log(id);
+  const attributes = ['username', 'total_time', 'most_watched_genre', 'id'];
+
+  const user = await User.findByPk(id, {
+    attributes,
+    raw: true
+  });
+
+  return pick(user, attributes)
+}
+
 const store = async (data) => {
   delete data.confirmPassword;
   const newUser = await User.create(data);
@@ -74,5 +87,5 @@ const update = async (userToken, data) => {
 };
 
 module.exports = {
-  show, deleteUser, store, index, update,
+  show, deleteUser, store, index, update, redirectUser
 };

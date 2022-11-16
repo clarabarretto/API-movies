@@ -77,6 +77,36 @@ const getCoverUsers = async (userToken) => {
   }
 }
 
+const getCoveOtherUsers = async (userId) => {
+  const attributes = ['rating', 'movie_id', 'user_id'];
+  console.log(userId);
+
+  const allUserMovies = await Watched.findAll({
+    where: { user_id: userId },
+    attributes,
+    include: [{
+      model: Movie,
+      attributes: ['name', 'genre', 'time', 'rating', 'synopsis', 'director'],
+    }],
+    raw: true,
+    nest:true
+  })
+
+  const movieIds = allUserMovies.map(watch => watch.movie_id)
+
+  const allImages = await Cover.findAll({
+    where: {
+      movie_id: movieIds
+    },
+    raw: true
+  })
+
+  return {
+    allUserMovies,
+    allImages
+  }
+}
+
 const allCovers = filter => {
   const whereFilter = {};
 
@@ -97,5 +127,5 @@ const allCovers = filter => {
 }
 
 module.exports = {
-  store, deleteCover, show, allCovers, getCoverUsers
+  store, deleteCover, show, allCovers, getCoverUsers, getCoveOtherUsers
 }

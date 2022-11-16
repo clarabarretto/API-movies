@@ -10,6 +10,7 @@ class UserController extends BaseController {
     this.store = this.store.bind(this)
     this.delete = this.delete.bind(this)
     this.update = this.update.bind(this)
+    this.redirectUser = this.redirectUser.bind(this)
   }
 
   async index(req, res) {
@@ -24,6 +25,17 @@ class UserController extends BaseController {
   async show(req, res) {
     try {
       const user = await userService.show(req.actualUser);
+      this.handleResponse(res, user)
+    } catch (e) {
+      this.handleError(res, 'ERROR')
+
+    }
+  }
+
+  async redirectUser(req, res) {
+    try {
+      const {id} =req.filter
+      const user = await userService.redirectUser(id);
       this.handleResponse(res, user)
     } catch (e) {
       this.handleError(res, 'ERROR')

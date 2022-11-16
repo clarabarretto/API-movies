@@ -9,6 +9,7 @@ class UserRoutes extends BaseRoute {
     this.routes.use(this.LoginRequired)
     this.routes.get('/', this.schemaValidator.validate(userSchema.index), userController.index )
     this.routes.get('/profile',  userController.show)
+    this.routes.get('/profile/:id', this.schemaValidator.validate(userSchema.search) , userController.redirectUser)
     this.routes.put('/',  this.schemaValidator.validate(userSchema.update), userController.update)
     this.routes.delete('/:id?', userController.delete)
 

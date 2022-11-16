@@ -7,6 +7,10 @@ class CoverController extends BaseController {
 
     this.store = this.store.bind(this)
     this.deleteCover = this.deleteCover.bind(this)
+    this.show = this.show.bind(this)
+    this.allCovers = this.allCovers.bind(this)
+    this.getCoverUsers = this.getCoverUsers.bind(this)
+    this.getCoveOtherUsers = this.getCoveOtherUsers.bind(this)
   }
 
   async store(req, res) {
@@ -35,9 +39,9 @@ class CoverController extends BaseController {
   async show(req,res){
     try{
       const showCover = await coverService.show(req.params.id)
-      return res.json(showCover)
+      this.handleResponse(res, showCover)
     }catch(e){
-      console.log(e);
+      this.handleError(res, e)
     }
   }
 
@@ -46,20 +50,30 @@ class CoverController extends BaseController {
       console.log(req.query)
 
       const cover = await coverService.allCovers(req.query);
-      return res.json(cover)
+      this.handleResponse(res, cover)
 
     } catch (e) {
-      console.log(e);
+      this.handleError(res, e)
     }
   }
 
   async getCoverUsers(req,res){
     try {
+
       const watched = await coverService.getCoverUsers(req.actualUser);
-      console.log(watched)
-      return res.json(watched)
+      this.handleResponse(res, watched)
     } catch (e) {
-      console.log(e);
+      this.handleError(res, e)
+    }
+  }
+
+  async getCoveOtherUsers(req,res){
+    try {
+      const {user_id} = req.filter
+      const watched = await coverService.getCoveOtherUsers(user_id);
+      this.handleResponse(res, watched)
+    } catch (e) {
+      this.handleError(res, e)
     }
   }
 

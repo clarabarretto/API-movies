@@ -6,6 +6,11 @@ const schema = {
       username: yup.string(),
     }).noUnknown(),
   },
+  search: {
+    params: yup.object().shape({
+      id: yup.number().integer().positive(),
+    }).noUnknown(),
+  },
   store: {
     body: yup.object().shape({
       admin: yup.boolean().default(false),
