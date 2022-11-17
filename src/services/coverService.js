@@ -49,7 +49,6 @@ const show = (id) => {
 
 const getCoverUsers = async (userToken) => {
   const attributes = ['rating', 'movie_id', 'user_id'];
-  console.log(userToken);
 
   const allUserMovies = await Watched.findAll({
     where: { user_id: userToken.id },
@@ -79,7 +78,6 @@ const getCoverUsers = async (userToken) => {
 
 const getCoveOtherUsers = async (userId) => {
   const attributes = ['rating', 'movie_id', 'user_id'];
-  console.log(userId);
 
   const allUserMovies = await Watched.findAll({
     where: { user_id: userId },

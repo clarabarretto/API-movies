@@ -57,7 +57,7 @@ const allRating = async (data) => {
 
 const allGenre = async (userToken, filter) => {
   const mostRepeatedGenre = {}
-  console.log(filter)
+
   const findAllGenres = await Watched.findAll({
     where: { user_id: userToken.id },
     attributes: [],
@@ -76,7 +76,6 @@ const allGenre = async (userToken, filter) => {
   })
 
   if (!findAllGenres?.length) {
-    console.log(findAllGenres)
     return movie.genre
   }
 
@@ -148,7 +147,7 @@ const deleteWatched = async (filter, userToken) => {
     });
 
     if (userToken.admin || userToken.id !== watch.user_id) {
-      console.log(watch.user_id);
+
       throw new Error('you cannot delete movies from accounts');
     }
 
@@ -185,13 +184,11 @@ const update = async (filter, data, userToken) => {
       where: {user_id: userToken.id, movie_id: filter.movie_id},
       raw: true
     });
-    console.log(watched,'watched')
     if (userToken.admin ||userToken.id !== watched.user_id) {
       throw new Error('you cannot update movies from accounts');
     }
 
     const ratingValue = await allRating(watched);
-    console.log(ratingValue);
 
     await Promise.all([
       Watched.update(data, {

@@ -33,7 +33,6 @@ class WatchedController extends BaseController {
 
   async store(req, res) {
     try {
-      console.log(req.data);
       const newMovie = await watchedService.store(req.actualUser, req.data);
       this.handleResponse(res, newMovie)
     } catch (e) {
