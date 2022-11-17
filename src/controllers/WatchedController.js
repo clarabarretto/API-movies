@@ -10,6 +10,7 @@ class WatchedController extends BaseController {
     this.store = this.store.bind(this)
     this.delete = this.delete.bind(this)
     this.update = this.update.bind(this)
+    this.checkWatched = this.checkWatched.bind(this)
   }
 
   async index(req, res) {
@@ -32,6 +33,7 @@ class WatchedController extends BaseController {
 
   async store(req, res) {
     try {
+      console.log(req.data);
       const newMovie = await watchedService.store(req.actualUser, req.data);
       this.handleResponse(res, newMovie)
     } catch (e) {
@@ -60,6 +62,15 @@ class WatchedController extends BaseController {
       this.handleError(res, 'ERROR')
     }
   }
+
+  async checkWatched(req, res) {
+    try {
+      const movie = await watchedService.checkWatched(req.actualUser, req.params);
+      this.handleResponse(res, movie)
+    } catch (e) {
+      this.handleError(res, 'ERROR')
+    }
+}
 }
 
 export default new WatchedController();

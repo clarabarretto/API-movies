@@ -1,7 +1,7 @@
 const Watched = require('../models/Watched').default;
 const Movie = require('../models/Movie').default;
 const User = require('../models/User').default;
-const {pick, map} = require('lodash')
+const {pick, map, filter} = require('lodash')
 
 const index = async (filter) => {
   const attributes = ['rating', 'movie_id'];
@@ -179,10 +179,13 @@ const deleteWatched = async (filter, userToken) => {
 
 const update = async (filter, data, userToken) => {
   const transaction = await Watched.sequelize.transaction();
-  try {
-    const { id } = filter;
-    const watched = await Watched.findByPk(id, {raw: true});
 
+  try {
+    const watched = await Watched.findOne({
+      where: {user_id: userToken.id, movie_id: filter.movie_id},
+      raw: true
+    });
+    console.log(watched,'watched')
     if (userToken.admin ||userToken.id !== watched.user_id) {
       throw new Error('you cannot update movies from accounts');
     }
@@ -192,7 +195,7 @@ const update = async (filter, data, userToken) => {
 
     await Promise.all([
       Watched.update(data, {
-        where: { id },
+        where: { id: watched.id },
         transaction
       }),
       Movie.update({ rating: ratingValue }, {
@@ -209,6 +212,12 @@ const update = async (filter, data, userToken) => {
   }
 };
 
+const checkWatched = (userToken, filter) => {
+ return Watched.count({
+    where: { user_id: userToken.id, movie_id: filter.movie_id },
+  })
+}
+
 module.exports = {
-  index, show, store, deleteWatched, update,
+  index, show, store, deleteWatched, update, checkWatched
 };

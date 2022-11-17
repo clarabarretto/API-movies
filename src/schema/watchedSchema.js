@@ -12,7 +12,7 @@ const schema = {
       rating: yup.number(),
     }).noUnknown(),
     params: yup.object().shape({
-      id: yup.number().positive(),
+      movie_id: yup.number().positive(),
     }).noUnknown(),
   },
   search: {
