@@ -47,8 +47,6 @@ class CoverController extends BaseController {
 
   async allCovers(req, res) {
     try {
-      console.log(req.query)
-
       const cover = await coverService.allCovers(req.query);
       this.handleResponse(res, cover)
 

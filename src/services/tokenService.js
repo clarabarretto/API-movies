@@ -17,7 +17,14 @@ const store = async (data) => {
   const token = jwt.sign({ id, email }, process.env.TOKEN_SECRET, {
     expiresIn: process.env.TOKEN_EXPIRATION,
   });
-  return token;
+
+  const tokenData = {token}
+
+  if (user.admin) {
+    tokenData.admin = true
+  }
+
+  return tokenData
 };
 
 module.exports = {

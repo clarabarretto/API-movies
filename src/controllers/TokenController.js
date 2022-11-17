@@ -11,7 +11,7 @@ class TokenController extends BaseController {
   async store(req, res) {
     try {
       const token = await tokenService.store(req.data);
-      this.handleResponse(res, {token})
+      this.handleResponse(res, token)
     } catch (e) {
       this.handleError(res, 'ERROR')
     }
