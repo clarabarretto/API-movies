@@ -35,17 +35,24 @@ const show = async (filter, userToken) => {
 };
 
 const store = async (userToken, data) => {
+  try{
+    const createData = {
+      ...data,
+      admin_id: userToken.id
+    }
 
-  data.admin_id = userToken.id;
-  const newMovie = await Movie.create(data);
+    const newMovie = await Movie.create(createData);
 
-  const {
-    name, director, genre, time, synopsis, admin_id,
-  } = newMovie;
+    const {
+      name, director, genre, time, synopsis, admin_id, id
+    } = newMovie;
 
-  return {
-    name, director, genre, time, synopsis, admin_id,
-  };
+    return {
+      name, director, genre, time, synopsis, admin_id, id
+    };
+  }catch(e){
+    console.log(e);
+  }
 };
 
 const deleteMovie = async (filter, userToken) => {

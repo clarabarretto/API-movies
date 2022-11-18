@@ -14,6 +14,9 @@ class CoverController extends BaseController {
   }
 
   async store(req, res) {
+    console.log('chegou aqui')
+    console.log(req.file, 'sou o file')
+    console.log(req.data, 'sou o Data')
 
     try {
       const fileData = req.data;
