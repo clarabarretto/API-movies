@@ -54,14 +54,9 @@ const store = async (data) => {
 };
 
 const deleteUser = async (userToken, filter) => {
-  const filterId = filter.id || userToken.id
-
+  const filterId = userToken.id
 
   const user = await User.findByPk(filterId);
-
-  if (!userToken.admin && user.id !== userToken.id) {
-    return('you cannot delete other users');
-  }
 
   const userCount = await User.count({ where: { admin: true } });
 
@@ -79,6 +74,19 @@ const deleteUser = async (userToken, filter) => {
   return { deleted: user };
 };
 
+const deleteOtherUser = async (filter) => {
+  console.log(filter.id);
+  const user = await User.findByPk(filter.id);
+
+  await Watched.destroy({
+    where: { user_id: filter.id},
+  })
+  console.log(user);
+  await user.destroy();
+  return { deleted: user };
+
+}
+
 const update = async (userToken, data) => {
   await User.update(data, { where: { id: userToken.id } });
 
@@ -86,5 +94,5 @@ const update = async (userToken, data) => {
 };
 
 module.exports = {
-  show, deleteUser, store, index, update, redirectUser
+  show, deleteUser, store, index, update, redirectUser, deleteOtherUser
 };

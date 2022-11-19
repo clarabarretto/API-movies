@@ -11,7 +11,9 @@ class UserController extends BaseController {
     this.delete = this.delete.bind(this)
     this.update = this.update.bind(this)
     this.redirectUser = this.redirectUser.bind(this)
+    this.deleteOtherUser = this.deleteOtherUser.bind(this)
   }
+
 
   async index(req, res) {
     try {
@@ -56,6 +58,16 @@ class UserController extends BaseController {
   async delete(req, res) {
     try {
       const user = await userService.deleteUser(req.actualUser, req.filter);
+      this.handleResponse(res, user)
+    } catch (e) {
+      this.handleError(res, 'ERROR')
+
+    }
+  }
+
+  async deleteOtherUser(req,res){
+    try {
+      const user = await userService.deleteOtherUser(req.filter);
       this.handleResponse(res, user)
     } catch (e) {
       this.handleError(res, 'ERROR')

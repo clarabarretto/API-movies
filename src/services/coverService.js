@@ -6,18 +6,22 @@ import Watched from "../models/Watched"
 
 
 const store = async (file, movie_id, actualUser) => {
+  try {
+    const movie = await Movie.findOne({
+      where: {
+        id: movie_id,
+      },
+      raw: true
+    })
 
-  const movie = await Movie.findOne({
-    where: {
-      id: movie_id,
-    },
-    raw: true
-  })
+    if (!movie) {
+      throw new Error('movie does not exist')
+    }
+    return Cover.create({ ...file, movie_id })
 
-  if (!movie) {
-    throw new Error('movie does not exist')
+  } catch (error) {
+    console.log(error);
   }
-  return Cover.create({ ...file, movie_id })
 }
 
 const deleteCover = async (filter, actualUser) => {
