@@ -3,16 +3,12 @@ import { Op, where } from "sequelize";
 import Cover from "../models/Cover";
 import Movie from "../models/Movie"
 import Watched from "../models/Watched"
-import handleCreate from "./handlesUtils"
 
-const storeService = async (req) => {
-  // const { id } = req.params;
-  const { name } = req.body;
-
-  const foto = await handleCreate(images, {
-    url: `/views/images/${name}`,
-    ...req.body,
-  });
+const storeService = async (file, params) => {
+  const foto = await Cover.create({
+    ...file,
+    movie_id: params.movie_id
+  })
 
   return foto;
 };

@@ -1,14 +1,18 @@
 const { extname } = require("path");
 const multer = require("multer");
 const fs = require("fs");
-const multerConfig = require("../config/multerConfig");
+const multerConfig = require("../config/multerConfigPC");
+// const fg =require("")
 
 const upload = multer(multerConfig).single("img");
 
 module.exports = {
   create(req, res, next) {
     return upload(req, res, async (err) => {
-      const { img, name } = req.body;
+      const { file, name } = req.body;
+
+      const img = file;
+
       let imagemReq = "";
 
       if (img.substring(11, 14) === "jpeg") {
@@ -24,7 +28,10 @@ module.exports = {
       }
 
       const filename = name.substring(0, 4) + extname(name);
-      const filePath = `../ecommerce_template/views/images/${filename}`;
+      // '..', '..', '..', 'Frontend', 'assets', 'covers'
+      const filePath = `../../../Frontend/assets/covers/${filename}`;
+
+      console.log(filePath)
       req.body = { filename, name };
 
       fs.writeFileSync(filePath, imagemReq, "base64", (error) => {

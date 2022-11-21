@@ -15,7 +15,7 @@ class CoverController extends BaseController {
   }
   async storePc(req, res) {
     try {
-      const foto = await coverService.storeService(req);
+      const foto = await coverService.storeService(req.body, req.params);
       return res.json(foto);
     } catch (e) {
       return this.handleError(res, e)

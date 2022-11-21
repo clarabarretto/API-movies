@@ -1,7 +1,7 @@
 const multer = require("multer");
 const { resolve } = require("path");
 
-const path = resolve(__dirname, "..", "public", "img", "products");
+const path = resolve(__dirname, "..", "..", "public", "img");
 
 module.exports = multer({
   fileFilter: (req, file, callback) => {
