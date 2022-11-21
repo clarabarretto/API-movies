@@ -11,13 +11,20 @@ class CoverController extends BaseController {
     this.allCovers = this.allCovers.bind(this)
     this.getCoverUsers = this.getCoverUsers.bind(this)
     this.getCoveOtherUsers = this.getCoveOtherUsers.bind(this)
+    this.storePc = this.storePc.bind(this)
+  }
+  async storePc(req, res) {
+    try {
+      const foto = await coverService.storeService(req);
+      return res.json(foto);
+    } catch (e) {
+      return this.handleError(res, e)
+    }
   }
 
   async store(req, res) {
     console.log('chegou aqui')
-    console.log(req.file, 'sou o file')
-    console.log(req.data, 'sou o Data')
-
+    console.log(req.file)
     try {
       const fileData = req.data;
       const { movie_id } = req.params;

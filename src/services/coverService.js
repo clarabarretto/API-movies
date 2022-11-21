@@ -3,7 +3,19 @@ import { Op, where } from "sequelize";
 import Cover from "../models/Cover";
 import Movie from "../models/Movie"
 import Watched from "../models/Watched"
+import handleCreate from "./handlesUtils"
 
+const storeService = async (req) => {
+  // const { id } = req.params;
+  const { name } = req.body;
+
+  const foto = await handleCreate(images, {
+    url: `/views/images/${name}`,
+    ...req.body,
+  });
+
+  return foto;
+};
 
 const store = async (file, movie_id, actualUser) => {
   try {
@@ -129,5 +141,5 @@ const allCovers = filter => {
 }
 
 module.exports = {
-  store, deleteCover, show, allCovers, getCoverUsers, getCoveOtherUsers
+  store, deleteCover, show, allCovers, getCoverUsers, getCoveOtherUsers, storeService
 }
