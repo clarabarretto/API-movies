@@ -1,26 +1,28 @@
-import multer from 'multer';
-import { extname, resolve } from 'path';
+const multer = require("multer");
+const { resolve } = require("path");
 
-const randomFunction = () => Math.floor(Math.random() * 10000 + 10000);
+const path = resolve(__dirname, '..', '..', '..', 'Frontend', 'assets', 'covers');
 
-export default {
-  fileFilter: (req, file, cb) => {
-
-    // if (!['image/png', 'image/jpeg'].includes(file.mimetype)) {
-    //   return cb('file must be PNG or JPG');
-    // }
-
-    return cb(null, true);
+module.exports = multer({
+  fileFilter: (req, file, callback) => {
+    const imageExtention = ["image/png", "image/jpg", "image/jpeg"].find(
+      (acceptFormat) => acceptFormat == file.mimetype
+    );
+    if (!imageExtention) {
+      return callback(null, "Nao suportada!");
+    }
+    return callback(null, true);
   },
   storage: multer.diskStorage({
-    destination: (req, file, cb) => {
-      cb(null, resolve(__dirname, '..', '..', '..', 'Frontend', 'assets', 'covers'));
+    destination: (req, file, callback) => {
+      callback(null, path);
     },
-    filename: (req, file, cb) => {
-      cb(null, `${Date.now()}_${randomFunction()}${extname(file.originalname)}`);
+    filename: (req, file, callback) => {
+      const uniqueDate = Date.now();
+      const fileFormat = file.mimetype.split("/");
+      const fileName = file.originalname.split(".");
+
+      callback(null, `${fileName[0]}.${fileFormat[fileFormat.length - 1]}`);
     },
   }),
-};
-
-
-
+});

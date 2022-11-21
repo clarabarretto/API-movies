@@ -1,17 +1,14 @@
-const { extname } = require("path");
+const { extname, resolve } = require("path");
 const multer = require("multer");
 const fs = require("fs");
-const multerConfig = require("../config/multerConfigPC");
-// const fg =require("")
+const multerConfig = require("../config/multerConfig");
 
 const upload = multer(multerConfig).single("img");
 
 module.exports = {
   create(req, res, next) {
     return upload(req, res, async (err) => {
-      const { file, name } = req.body;
-
-      const img = file;
+      const { img, name } = req.body;
 
       let imagemReq = "";
 
@@ -28,8 +25,8 @@ module.exports = {
       }
 
       const filename = name.substring(0, 4) + extname(name);
-      // '..', '..', '..', 'Frontend', 'assets', 'covers'
-      const filePath = `../../../Frontend/assets/covers/${filename}`;
+
+      const filePath = resolve(__dirname , '..', '..' , '..' ,'Frontend', 'assets', 'covers' , `${filename}`);
 
       console.log(filePath)
       req.body = { filename, name };

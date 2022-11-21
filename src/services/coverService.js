@@ -7,6 +7,7 @@ import Watched from "../models/Watched"
 const storeService = async (file, params) => {
   const foto = await Cover.create({
     ...file,
+    originalname: file.name,
     movie_id: params.movie_id
   })
 
