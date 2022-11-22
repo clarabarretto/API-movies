@@ -28,6 +28,14 @@ const schema = {
       email: yup.string().email(),
     }).noUnknown(),
   },
+  makeAdmin: {
+    params: yup.object().shape({
+      id: yup.number().integer().positive(),
+    }).noUnknown(),
+    body: yup.object().shape({
+      admin: yup.boolean()
+    }).noUnknown()
+  }
 };
 
 export default schema;

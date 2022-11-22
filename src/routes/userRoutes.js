@@ -11,6 +11,7 @@ class UserRoutes extends BaseRoute {
     this.routes.get('/profile',  userController.show)
     this.routes.get('/profile/:id', this.schemaValidator.validate(userSchema.search) , userController.redirectUser)
     this.routes.put('/',  this.schemaValidator.validate(userSchema.update), userController.update)
+    this.routes.put('/:id',  this.schemaValidator.validate(userSchema.makeAdmin), userController.makeAdmin)
     this.routes.delete('/', userController.delete)
     this.routes.delete('/:id',this.isAdmin,this.schemaValidator.validate(userSchema.search), userController.deleteOtherUser)
 

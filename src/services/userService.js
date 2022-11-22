@@ -19,7 +19,7 @@ const index = async (filter) => {
 const show = async (filter) => {
   ;
   const { id } = filter;
-  const attributes = ['username', 'total_time', 'most_watched_genre', 'id'];
+  const attributes = ['username', 'total_time', 'most_watched_genre', 'id', 'admin'];
 
   if (filter.admin) {
     attributes.push('admin', 'email');
@@ -36,7 +36,7 @@ const show = async (filter) => {
 const redirectUser = async (filter) => {
   const id = filter;
 
-  const attributes = ['username', 'total_time', 'most_watched_genre', 'id'];
+  const attributes = ['username', 'total_time', 'most_watched_genre', 'id', 'admin'];
 
   const user = await User.findByPk(id, {
     attributes,
@@ -93,6 +93,12 @@ const update = async (userToken, data) => {
   return data;
 };
 
+const makeAdmin = async (userToken, data, filter) => {
+  await User.update(data, { where: {id: filter.id}})
+
+  return data
+}
+
 module.exports = {
-  show, deleteUser, store, index, update, redirectUser, deleteOtherUser
+  show, deleteUser, store, index, update, redirectUser, deleteOtherUser, makeAdmin
 };

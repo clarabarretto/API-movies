@@ -11,6 +11,8 @@ import tokenRoutes from './src/routes/tokenRoutes';
 import movieRoutes from './src/routes/movieRoutes';
 import watchedRoutes from './src/routes/watchedRoutes';
 import coverRoutes from './src/routes/coverRoutes';
+import userAcessLogsRoutes from  './src/routes/userAcessLogsRoutes';
+import recoveryRoutes from './src/routes/recoveryRoutes'
 import loginRequired from './src/middlewares/loginRequired'
 
 env.config();
@@ -37,6 +39,8 @@ class App {
     this.app.use('/watched/', watchedRoutes.setup());
     this.app.use('/login/', tokenRoutes.setup());
     this.app.use('/covers/', coverRoutes.setup());
+    this.app.use('/acessLogs/', userAcessLogsRoutes.setup());
+    this.app.use('/', recoveryRoutes.setup())
   }
   setup() {
     this.middlewares();

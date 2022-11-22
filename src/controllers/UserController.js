@@ -12,6 +12,7 @@ class UserController extends BaseController {
     this.update = this.update.bind(this)
     this.redirectUser = this.redirectUser.bind(this)
     this.deleteOtherUser = this.deleteOtherUser.bind(this)
+    this.makeAdmin = this.makeAdmin.bind(this)
   }
 
 
@@ -78,6 +79,16 @@ class UserController extends BaseController {
   async update(req, res) {
     try {
       const updatedUser = await userService.update(req.actualUser, req.data);
+      this.handleResponse(res, updatedUser)
+    } catch (e) {
+      this.handleError(res, 'ERROR')
+
+    }
+  }
+
+  async makeAdmin(req, res) {
+    try {
+      const updatedUser = await userService.makeAdmin(req.actualUser, req.data, req.filter);
       this.handleResponse(res, updatedUser)
     } catch (e) {
       this.handleError(res, 'ERROR')
