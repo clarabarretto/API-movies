@@ -24,7 +24,7 @@ class RecoveryService {
 
     await User.update({
       password_reset_token: token,
-      password_reset_expires: moment().add(1, 'day').toISOString(),
+      password_reset_expires: moment().add(1, 'hour').toISOString(),
     }, {
       where: {
         id: user.id,
