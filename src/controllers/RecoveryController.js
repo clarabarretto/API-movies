@@ -12,7 +12,9 @@ class RecoveryController extends BaseController {
   }
 
   async recovery(req, res) {
+
     try {
+
       const user = await recoveryService.recovery(req.data);
 
       return this.handleResponse(res, user);

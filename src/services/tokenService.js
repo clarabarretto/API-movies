@@ -11,10 +11,11 @@ const store = async (data) => {
   if (!user) {
     throw new Error('user does not exist');
   }
+
   const { id } = user;
+
   if (!(await user.passwordIsValid(password))) {
     const allowBlockUser = await userAcessLogsService.checkAccessVerification(id);
-
 
     if (!allowBlockUser) {
 

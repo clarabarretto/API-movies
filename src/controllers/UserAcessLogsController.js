@@ -9,6 +9,7 @@ class UserAcessLogsController extends BaseController {
   }
 
   async checkAccessVerification(req, res) {
+
     try {
       const filter = {
         user_id: req.id,
