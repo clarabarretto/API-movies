@@ -4,8 +4,9 @@ import User from '../models/User';
 import Movie from '../models/Movie';
 import Watched from '../models/Watched';
 import Cover from '../models/Cover';
+import UserAcessLog from '../models/UserAcessLog';
 
-const models = [User, Movie, Watched, Cover];
+const models = [User, Movie, Watched, Cover, UserAcessLog];
 
 const connection = new Sequelize(databaseConfig);
 

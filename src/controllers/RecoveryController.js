@@ -17,7 +17,6 @@ class RecoveryController extends BaseController {
 
       return this.handleResponse(res, user);
     } catch (e) {
-      console.log(e);
       return this.handleError(res, e);
     }
   }

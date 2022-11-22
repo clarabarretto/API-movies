@@ -51,7 +51,7 @@ const store = async (userToken, data) => {
       name, director, genre, time, synopsis, admin_id, id
     };
   }catch(e){
-    console.log(e);
+
   }
 };
 

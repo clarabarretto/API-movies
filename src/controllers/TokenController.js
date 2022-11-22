@@ -13,7 +13,7 @@ class TokenController extends BaseController {
       const token = await tokenService.store(req.data);
       this.handleResponse(res, token)
     } catch (e) {
-      this.handleError(res, 'ERROR')
+      this.handleError(res, e === 'Usuario bloqueado' ?{message: e} : 'ERROR')
     }
   }
 }

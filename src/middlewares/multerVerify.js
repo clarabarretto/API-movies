@@ -28,7 +28,6 @@ module.exports = {
 
       const filePath = resolve(__dirname , '..', '..' , '..' ,'Frontend', 'assets', 'covers' , `${filename}`);
 
-      console.log(filePath)
       req.body = { filename, name };
 
       fs.writeFileSync(filePath, imagemReq, "base64", (error) => {

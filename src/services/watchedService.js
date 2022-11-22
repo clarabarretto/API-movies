@@ -129,7 +129,6 @@ const store = async (userToken, data) => {
       rating, user_id, movie_id,
     };
   } catch (e) {
-    console.log(e);
     await transaction.rollback();
     throw e
   }
@@ -170,7 +169,6 @@ const deleteWatched = async (filter, userToken) => {
     await transaction.commit();
     return { deleted: watch };
   } catch (e) {
-    console.log(e);
     await transaction.rollback();
     throw e
   }
@@ -203,7 +201,6 @@ const update = async (filter, data, userToken) => {
     await transaction.commit();
     return { update: watched };
   } catch (e) {
-    console.log(e);
     await transaction.rollback();
     throw e
   }

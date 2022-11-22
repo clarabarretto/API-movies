@@ -75,13 +75,13 @@ const deleteUser = async (userToken, filter) => {
 };
 
 const deleteOtherUser = async (filter) => {
-  console.log(filter.id);
+
   const user = await User.findByPk(filter.id);
 
   await Watched.destroy({
     where: { user_id: filter.id},
   })
-  console.log(user);
+
   await user.destroy();
   return { deleted: user };
 

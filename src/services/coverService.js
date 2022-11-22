@@ -29,7 +29,7 @@ const store = async (file, movie_id, actualUser) => {
     return Cover.create({ ...file, movie_id })
 
   } catch (error) {
-    console.log(error);
+
   }
 }
 

@@ -1,18 +1,20 @@
-import { Model, DataTypes } from 'sequelize';
+import Sequelize, { Model } from 'sequelize';
 
-export default class UserAcessLogs extends Model {
+export default class UserAcessLog extends Model {
   static init(sequelize) {
     super.init(
       {
         status: {
-          type: DataTypes.STRING,
-          defaultValue: '',
+          type: Sequelize.STRING,
         },
       },
       {
         sequelize,
+        tableName: 'user_acess_logs'
       },
     );
+
+    return this;
   }
 
   static associate(models) {

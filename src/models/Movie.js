@@ -3,7 +3,6 @@ import Sequelize, { Model } from 'sequelize';
 export default class Movie extends Model {
   static init(sequelize) {
     super.init({
-
       name: {
         type: Sequelize.STRING,
         defaultValue: '',

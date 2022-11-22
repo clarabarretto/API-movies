@@ -4,6 +4,7 @@ import { Op } from 'sequelize';
 import bcryptjs from 'bcryptjs';
 import sendEmailService from './sendEmailService';
 import User from '../models/User'
+const { default: userAcessLogsService } = require('./userAcessLogsService');
 
 class RecoveryService {
   async recovery(data) {
@@ -43,8 +44,6 @@ class RecoveryService {
   }
 
   async validateToken(token) {
-    console.log(moment(), 'moment')
-    console.log(token, 'token')
 
     const hasToken = await User.findOne({
       where: {
@@ -53,7 +52,7 @@ class RecoveryService {
           [Op.gt]: moment(),
         },
       },
-      attributes: ['username', 'email'],
+      attributes: ['username', 'email', 'id'],
       raw: true,
     });
 
@@ -80,6 +79,12 @@ class RecoveryService {
         password_reset_token: token,
       },
     });
+
+    await userAcessLogsService.destroy({
+      where: {
+        user_id: hasToken.id
+      }
+    })
 
     const options = {
       context: {

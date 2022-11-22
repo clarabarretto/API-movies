@@ -1,18 +1,21 @@
-import UserAcessLogs from '../models/UserAcessLogs';
+const UserAcessLog = require('../models/UserAcessLog').default;
 
 class UserAcessLogsService {
-  async checkAccessVerification(filter) {
+  async checkAccessVerification(id) {
+
     try {
-      const accessLogs = await UserAcessLogs.findAll({
-        where: filter,
+      const accessLogs = await UserAcessLog.findAll({
+        where:{
+          user_id: id
+        },
         raw: true,
         attributes: ['status'],
-        order: [['id', 'DESC']],
-        limit: 3,
+        limit: 3
       });
 
       return accessLogs.length === 3 && accessLogs.every((log) => log.status === 'FAIL');
     } catch (err) {
+
       throw new Error(err);
     }
   }
