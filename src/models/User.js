@@ -37,6 +37,20 @@ export default class User extends Model {
         type: Sequelize.BOOLEAN,
         defaultValue: false,
       },
+      deleted_at:{
+        type: Sequelize.DATE,
+        defaultValue: null
+      },
+      password_reset_token:{
+        type: Sequelize.STRING
+      },
+      password_reset_expires:{
+        type: Sequelize.DATE
+      },
+      is_blocked: {
+        type: Sequelize.BOOLEAN,
+        defaultValue: false
+      }
     }, {
       sequelize,
       paranoid: true

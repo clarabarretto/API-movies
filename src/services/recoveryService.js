@@ -43,6 +43,9 @@ class RecoveryService {
   }
 
   async validateToken(token) {
+    console.log(moment(), 'moment')
+    console.log(token, 'token')
+
     const hasToken = await User.findOne({
       where: {
         password_reset_token: token,

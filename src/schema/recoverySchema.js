@@ -9,7 +9,7 @@ const schema = {
 
   token: {
     params: yup.object({
-      token: yup.string().length(40).required(),
+      token: yup.string().required(),
     }).noUnknown(),
   },
 
