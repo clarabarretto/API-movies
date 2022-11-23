@@ -10,12 +10,12 @@ class UserAcessLogsService {
         },
         raw: true,
         attributes: ['status'],
-        limit: 3
+        limit: 2
       });
 
-      return accessLogs.length === 3 && accessLogs.every((log) => log.status === 'FAIL');
+      return accessLogs.length === 2 && accessLogs.every((log) => log.status === 'FAIL');
     } catch (err) {
-
+      console.log(err);
       throw new Error(err);
     }
   }
