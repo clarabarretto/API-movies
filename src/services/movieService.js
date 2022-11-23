@@ -67,6 +67,7 @@ const storeTest = async (userToken, data, file) => {
     const newCover = await Cover.create({
       ...file,
       originalname: data.covername,
+      filename: data.covername,
       movie_id: newMovie.id
     })
 
