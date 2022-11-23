@@ -15,7 +15,7 @@ class UserAcessLogsService {
 
       return accessLogs.length === 2 && accessLogs.every((log) => log.status === 'FAIL');
     } catch (err) {
-      console.log(err);
+
       throw new Error(err);
     }
   }
