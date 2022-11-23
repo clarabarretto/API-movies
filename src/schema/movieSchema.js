@@ -8,6 +8,8 @@ const schema = {
       genre: yup.string().required(),
       time: yup.number().positive().required(),
       synopsis: yup.string().required(),
+      covername: yup.string().required(),
+      img: yup.string().required(),
 
     }).noUnknown(),
   },

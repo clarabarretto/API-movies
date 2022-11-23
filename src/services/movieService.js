@@ -51,7 +51,35 @@ const store = async (userToken, data) => {
       name, director, genre, time, synopsis, admin_id, id
     };
   }catch(e){
+    console.log(e);
+  }
+};
 
+const storeTest = async (userToken, data, file) => {
+  try{
+    const createData = {
+      ...data,
+      admin_id: userToken.id
+    }
+
+    const newMovie = await Movie.create(createData);
+
+    const newCover = await Cover.create({
+      ...file,
+      originalname: data.covername,
+      movie_id: newMovie.id
+    })
+
+    const {
+      name, director, genre, time, synopsis, admin_id, id
+    } = newMovie;
+    const { originalname, } = newCover
+
+    return {
+      name, director, genre, time, synopsis, admin_id, id, originalname
+    };
+  }catch(e){
+    console.log(e);
   }
 };
 
@@ -97,5 +125,5 @@ const update = async (filter, data, userToken) => {
 };
 
 module.exports = {
-  index, show, store, deleteMovie, update,
+  index, show, store, deleteMovie, update,storeTest
 };

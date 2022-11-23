@@ -10,6 +10,7 @@ class MovieController extends BaseController {
     this.store = this.store.bind(this)
     this.delete = this.delete.bind(this)
     this.update = this.update.bind(this)
+    this.storeTest = this.storeTest.bind(this)
   }
 
   async index(req, res) {
@@ -37,6 +38,16 @@ class MovieController extends BaseController {
       const newMovie = await movieService.store(req.actualUser, req.data);
       this.handleResponse(res, newMovie)
     } catch (e) {
+      this.handleError(res, 'error while storing a movie')
+    }
+  }
+
+  async storeTest(req, res) {
+    try {
+      const newMovie = await movieService.storeTest(req.actualUser, req.data);
+      this.handleResponse(res, newMovie)
+    } catch (e) {
+      console.log(e);
       this.handleError(res, 'error while storing a movie')
     }
   }

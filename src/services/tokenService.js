@@ -52,7 +52,6 @@ const store = async (data) => {
 
   user = await User.findOne({ where: { email } });
 
-
   if (user.is_blocked) {
     throw ('Usuario bloqueado');
   }

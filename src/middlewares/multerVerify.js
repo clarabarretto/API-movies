@@ -8,7 +8,7 @@ const upload = multer(multerConfig).single("img");
 module.exports = {
   create(req, res, next) {
     return upload(req, res, async (err) => {
-      const { img, name } = req.body;
+      const { img, covername } = req.body;
 
       let imagemReq = "";
 
@@ -24,11 +24,11 @@ module.exports = {
         imagemReq = img.replace(/^data:image\/png;base64,/, "");
       }
 
-      const filename = name.substring(0, 4) + extname(name);
+      const filename = covername.substring(0, 4) + extname(covername);
 
       const filePath = resolve(__dirname , '..', '..' , '..' ,'Frontend', 'assets', 'covers' , `${filename}`);
 
-      req.body = { filename, name };
+      req.body = { filename, covername };
 
       fs.writeFileSync(filePath, imagemReq, "base64", (error) => {
         if (error) {

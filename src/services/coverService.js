@@ -14,24 +14,24 @@ const storeService = async (file, params) => {
   return foto;
 };
 
-const store = async (file, movie_id, actualUser) => {
-  try {
-    const movie = await Movie.findOne({
-      where: {
-        id: movie_id,
-      },
-      raw: true
-    })
+// const store = async (file, movie_id, actualUser) => {
+//   try {
+//     const movie = await Movie.findOne({
+//       where: {
+//         id: movie_id,
+//       },
+//       raw: true
+//     })
 
-    if (!movie) {
-      throw new Error('movie does not exist')
-    }
-    return Cover.create({ ...file, movie_id })
+//     if (!movie) {
+//       throw new Error('movie does not exist')
+//     }
+//     return Cover.create({ ...file, movie_id })
 
-  } catch (error) {
+//   } catch (error) {
 
-  }
-}
+//   }
+// }
 
 const deleteCover = async (filter, actualUser) => {
   try {
@@ -138,5 +138,5 @@ const allCovers = filter => {
 }
 
 module.exports = {
-  store, deleteCover, show, allCovers, getCoverUsers, getCoveOtherUsers, storeService
+   deleteCover, show, allCovers, getCoverUsers, getCoveOtherUsers, storeService
 }

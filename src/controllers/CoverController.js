@@ -12,6 +12,7 @@ class CoverController extends BaseController {
     this.getCoverUsers = this.getCoverUsers.bind(this)
     this.getCoveOtherUsers = this.getCoveOtherUsers.bind(this)
   }
+
   async store(req, res) {
     try {
       const foto = await coverService.storeService(req.body, req.params);
