@@ -11,6 +11,7 @@ class CoverRoutes extends BaseRoute {
     this.routes.delete('/delete/:id', coverController.deleteCover)
     this.routes.get('/show/:id', coverController.show)
     this.routes.get('/all', coverController.allCovers)
+    this.routes.get('/index', coverController.findAllCovers)
     this.routes.get('/watched', coverController.getCoverUsers)
     this.routes.get('/watched/:user_id',this.schemaValidator.validate(coverSchema.search), coverController.getCoveOtherUsers)
 

@@ -118,6 +118,17 @@ const getCoveOtherUsers = async (userId) => {
   }
 }
 
+const findAllCovers = () => {
+  return Cover.findAll({
+    attributes: ['filename'],
+    include: {
+        model: Movie,
+        as: 'movie',
+    },
+    order: [['movie' ,'rating', 'desc']]
+  });
+}
+
 const allCovers = filter => {
   const whereFilter = {};
 
@@ -138,5 +149,5 @@ const allCovers = filter => {
 }
 
 module.exports = {
-   deleteCover, show, allCovers, getCoverUsers, getCoveOtherUsers, storeService
+   deleteCover, show, allCovers, getCoverUsers, getCoveOtherUsers, storeService, findAllCovers
 }

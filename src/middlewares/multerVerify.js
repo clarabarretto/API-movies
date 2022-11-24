@@ -10,7 +10,7 @@ module.exports = {
     return upload(req, res, async (err) => {
       const { img, covername } = req.body;
 
-      let imagemReq = "";
+      let imagemReq = covername;
 
       if (img.substring(11, 14) === "jpeg") {
         imagemReq = img.replace(/^data:image\/jpg;base64,/, "");
@@ -24,11 +24,11 @@ module.exports = {
         imagemReq = img.replace(/^data:image\/png;base64,/, "");
       }
 
-      const filename = covername.substring(0, 4) + extname(covername);
+      const filename = covername;
 
       const filePath = resolve(__dirname , '..', '..' , '..' ,'Frontend', 'assets', 'covers' , `${filename}`);
 
-      req.body = { filename, covername };
+      req.body = { covername, covername };
 
       fs.writeFileSync(filePath, imagemReq, "base64", (error) => {
         if (error) {

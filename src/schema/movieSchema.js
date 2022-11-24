@@ -10,7 +10,6 @@ const schema = {
       synopsis: yup.string().required(),
       covername: yup.string().required(),
       img: yup.string().required(),
-
     }).noUnknown(),
   },
   update: {

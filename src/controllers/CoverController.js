@@ -11,6 +11,7 @@ class CoverController extends BaseController {
     this.allCovers = this.allCovers.bind(this)
     this.getCoverUsers = this.getCoverUsers.bind(this)
     this.getCoveOtherUsers = this.getCoveOtherUsers.bind(this)
+    this.findAllCovers = this.findAllCovers.bind(this)
   }
 
   async store(req, res) {
@@ -44,6 +45,16 @@ class CoverController extends BaseController {
   async allCovers(req, res) {
     try {
       const cover = await coverService.allCovers(req.query);
+      this.handleResponse(res, cover)
+
+    } catch (e) {
+      this.handleError(res, e)
+    }
+  }
+
+  async findAllCovers(req,res){
+    try {
+      const cover = await coverService.findAllCovers();
       this.handleResponse(res, cover)
 
     } catch (e) {
