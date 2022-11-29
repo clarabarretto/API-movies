@@ -143,7 +143,7 @@ const allCovers = filter => {
           as: 'movie',
           where: whereFilter
       },
-      limit:20,
+      limit:45,
       order: [['movie' ,'rating', 'desc']]
   });
 }
